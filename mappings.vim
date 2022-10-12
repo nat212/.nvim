@@ -18,3 +18,6 @@ nnoremap <leader>Y gg"+yG
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
+
+" LSP stuff
+nmap <leader>o :OrganiseImports<CR>

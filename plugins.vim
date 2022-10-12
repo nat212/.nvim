@@ -10,21 +10,25 @@ call plug#begin()
 " Color schemes
 Plug 'dracula/vim', { 'as': 'dracula' }
 
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
-
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'simrat39/symbols-outline.nvim'
-
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'rafamadriz/friendly-snippets'
 
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'theprimeagen/vim-be-good'
 Plug 'gruvbox-community/gruvbox'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sbdchd/neoformat'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -41,5 +45,10 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+
+Plug 'ThePrimeagen/harpoon'
+
+Plug 'tpope/vim-commentary'
+Plug 'windwp/nvim-autopairs'
 
 call plug#end()

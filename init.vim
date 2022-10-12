@@ -36,20 +36,16 @@ set wildignore+=**/node_modules/*
 set wildignore+=**/.git/*
 
 
+
+
 source ~/.config/nvim/plugins.vim
 
 colo dracula
 
 source ~/.config/nvim/mappings.vim
 
-" Load plugin configs
-source ~/.config/nvim/plugins/git.vim
-source ~/.config/nvim/plugins/netrw.vim
-source ~/.config/nvim/plugins/telescope.vim
-
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true } }
-lua require'symbols-outline'.setup()
-
+lua require'natashz'
 
 augroup highlight_yank
     autocmd!
