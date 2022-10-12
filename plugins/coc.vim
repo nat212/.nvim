@@ -68,12 +68,12 @@ let g:coc_node_path = '~/.nodenv/shims/node'
 
 command! -nargs=0 CocInstallPlugins :CocInstall -sync coc-angular
 
-if empty(glob('~/.local/bin/isort'))
+if !executable('isort')
   echo 'Installing isort'
   silent exec '!pip3 install --user isort'
   echo 'isort installed'
 endif
-if empty(glob('~/.pyenv/shims/black'))
+if !executable('black')
   echo 'Installing black'
   silent exec '!pip3 install --user black'
   echo 'black installed'
