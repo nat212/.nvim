@@ -1,5 +1,5 @@
 require('natashz.lsp')
-require('natashz.statusline')
+-- require('natashz.statusline')
 
 P = function(v)
     print(vim.inspect(v))

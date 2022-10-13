@@ -51,4 +51,6 @@ Plug 'ThePrimeagen/harpoon'
 Plug 'tpope/vim-commentary'
 Plug 'windwp/nvim-autopairs'
 
+Plug 'vim-airline/vim-airline'
+
 call plug#end()
