@@ -1,11 +1,18 @@
 -- Setup
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup {}
 require('nvim-autopairs').setup {}
 require('symbols-outline').setup {
     highlight_hovered_item = true,
     show_guides = true,
     auto_close = true
+}
+
+local saga = require('lspsaga')
+saga.init_lsp_saga {
+  server_filetype_map = {
+    typescript = 'typescript'
+  },
 }
 
 -- Symbols keybinding
@@ -18,22 +25,22 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- Diagnostic bindings
 local opts = {noremap = true, silent = true}
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', '<space>e', '<Cmd>Lspsaga show_line_diagnostics<CR>', opts)
+vim.keymap.set('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+-- Terminal
+vim.keymap.set('n', '<C-`>', '<Cmd>Lspsaga open_floaterm<CR>', opts)
+vim.keymap.set('t', '<C-`>', [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
 
 -- LSP bindings
 local on_attach = function(client, bufnr)
     local bufopts = {noremap = true, silent = true, buffer = bufnr}
     -- Gotos
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set('n', 'gd', '<Cmd>Lspsaga lsp_finder<CR>', bufopts)
     -- Hints/Help
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', bufopts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
     -- Workspaces
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
@@ -43,10 +50,10 @@ local on_attach = function(client, bufnr)
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts)
     -- Refactors/Format
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', '<A-CR>', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', '<space>rn', '<Cmd>Lspsaga rename<CR>', bufopts)
+    vim.keymap.set('n', '<A-CR>', '<Cmd>Lspsaga code_action<CR>', bufopts)
     vim.keymap.set('n', '<space>f',
-                   function() vim.lsp.buf.format {async = true} end, bufopts)
+                   '<Cmd>Neoformat<CR>', bufopts)
 end
 
 -- Organise TS imports
@@ -62,7 +69,15 @@ end
 local lspconfig = require('lspconfig')
 -- Servers that don't require any additional setup
 local servers = {
-    'rust_analyzer', 'jsonls', 'angularls', 'html', 'eslint', 'tailwindcss'
+    'rust_analyzer',
+    'jsonls',
+    'angularls',
+    'html',
+    'eslint',
+    'tailwindcss',
+    'marksman',
+    'zk',
+    'prosemd_lsp',
 }
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {capabilities = capabilities, on_attach = on_attach}
@@ -142,3 +157,20 @@ cmp.setup({
 })
 
 require('luasnip.loaders.from_vscode').lazy_load()
+
+-- Treeshaker
+require'nvim-treesitter.configs'.setup {
+    highlight = {enable = true},
+    indent = {enable = true},
+    ensure_installed = {
+        "tsx",
+        "toml",
+        "json",
+        "yaml",
+        "css",
+        "html",
+        "lua",
+        "markdown",
+    },
+    autotag = {enable = true}
+}

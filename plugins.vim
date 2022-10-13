@@ -12,6 +12,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'gruvbox-community/gruvbox'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
+" Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
 " LSP + Completion Stuff
 Plug 'williamboman/mason.nvim'
@@ -35,24 +36,35 @@ Plug 'simrat39/symbols-outline.nvim'
 " Language support + syntax
 Plug 'rust-lang/rust.vim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'editorconfig/editorconfig-vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+Plug 'windwp/nvim-autopairs'
+Plug 'windwp/nvim-ts-autotag'
 
 " Movement + utilities
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-surround'
-Plug 'windwp/nvim-autopairs'
 Plug 'tpope/vim-commentary'
 Plug 'ThePrimeagen/harpoon'
+
+" Git
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+" Plug 'dinhhuy258/git.nvim'
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'ThePrimeagen/git-worktree.nvim'
 
 " Misc
 Plug 'theprimeagen/vim-be-good'
+
+" Local Development
+Plug '~/Development/Personal/Vim/bufferline.nvim'
 
 call plug#end()

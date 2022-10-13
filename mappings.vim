@@ -24,3 +24,6 @@ function! RefreshPlugins()
 endfunction
 
 nnoremap <leader>rp :call RefreshPlugins()<CR>
+
+" Markdown preview
+nmap <leader>mp <Plug>MarkdownPreviewToggle

@@ -3,10 +3,11 @@ set path+=**
 set termguicolors
 set nohlsearch
 set number
-set tabstop=4 softtabstop=4
-set shiftwidth=4
+set tabstop=2 softtabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
+set smartcase
 set relativenumber
 set nowrap
 set noswapfile
