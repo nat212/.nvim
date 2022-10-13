@@ -16,3 +16,11 @@ vnoremap <leader>d "_d
 " LSP stuff
 nmap <leader>o :OrganiseImports<CR>
 nnoremap <leader>f :Neoformat<CR>
+
+" Map to refresh plugins
+function! RefreshPlugins()
+    exec 'source ~/.config/nvim/plugins.vim'
+    exec 'PlugInstall'
+endfunction
+
+nnoremap <leader>rp :call RefreshPlugins()<CR>

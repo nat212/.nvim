@@ -4,8 +4,13 @@ require('mason-lspconfig').setup()
 require('nvim-autopairs').setup {}
 require('symbols-outline').setup {
     highlight_hovered_item = true,
-    show_guides = true
+    show_guides = true,
+    auto_close = true
 }
+
+-- Symbols keybinding
+local toggle_outline = function() vim.cmd('SymbolsOutline') end
+vim.keymap.set('n', '<C-O>', toggle_outline, {silent = true})
 
 -- Capabilities to connect LSP to vim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -43,7 +48,6 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', '<space>f',
                    function() vim.lsp.buf.format {async = true} end, bufopts)
 end
-
 
 -- Organise TS imports
 local function ts_organise_imports()

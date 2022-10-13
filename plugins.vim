@@ -11,7 +11,7 @@ call plug#begin()
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'gruvbox-community/gruvbox'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'vim-airline/vim-airline'
+Plug 'nvim-lualine/lualine.nvim'
 
 " LSP + Completion Stuff
 Plug 'williamboman/mason.nvim'

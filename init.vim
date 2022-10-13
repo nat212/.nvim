@@ -5,6 +5,7 @@ lua require'natashz'
 
 " Colour scheme
 colo dracula
+set background=dark
 
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true } }
 
