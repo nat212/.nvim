@@ -1,18 +1,18 @@
+-- Setup
 require('mason').setup()
 require('mason-lspconfig').setup()
 require('nvim-autopairs').setup {}
-
 require('symbols-outline').setup {
     highlight_hovered_item = true,
     show_guides = true
 }
 
+-- Capabilities to connect LSP to vim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- Diagnostic bindings
 local opts = {noremap = true, silent = true}
-
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -21,27 +21,31 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 -- LSP bindings
 local on_attach = function(client, bufnr)
     local bufopts = {noremap = true, silent = true, buffer = bufnr}
+    -- Gotos
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+    -- Hints/Help
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+    -- Workspaces
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
     vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder,
                    bufopts)
     vim.keymap.set('n', '<space>wl', function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts)
-    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+    -- Refactors/Format
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
     vim.keymap.set('n', '<A-CR>', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', '<space>f',
                    function() vim.lsp.buf.format {async = true} end, bufopts)
 end
 
-local lspconfig = require('lspconfig')
 
+-- Organise TS imports
 local function ts_organise_imports()
     local params = {
         command = "_typescript.organizeImports",
@@ -51,6 +55,8 @@ local function ts_organise_imports()
     vim.lsp.buf.execute_command(params)
 end
 
+local lspconfig = require('lspconfig')
+-- Servers that don't require any additional setup
 local servers = {
     'rust_analyzer', 'jsonls', 'angularls', 'html', 'eslint', 'tailwindcss'
 }
@@ -58,15 +64,13 @@ for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {capabilities = capabilities, on_attach = on_attach}
 end
 
+-- Setup LUA server
 lspconfig['sumneko_lua'].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = {
         Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = 'LuaJIT'
-            },
+            runtime = {version = 'LuaJIT'},
             diagnostics = {
                 -- Get the language server to recognize the `vim` global
                 globals = {'vim'}
@@ -81,6 +85,7 @@ lspconfig['sumneko_lua'].setup {
     }
 }
 
+-- Setup tsserver
 lspconfig['tsserver'].setup {
     capabilities = capabilities,
     on_attach = on_attach,
@@ -92,13 +97,10 @@ lspconfig['tsserver'].setup {
     }
 }
 
+-- Snippets + completion
 local luasnip = require 'luasnip'
-
 local cmp = require 'cmp'
-
-if cmp == nil then
-    return
-end
+if cmp == nil then return end
 
 cmp.setup({
     snippet = {expand = function(args) luasnip.lsp_expand(args.body) end},
@@ -128,36 +130,6 @@ cmp.setup({
                 fallback()
             end
         end, {'i', 's'})
-        -- ['<CR>'] = cmp.mapping.confirm{
-        --     behavior = cmp.ConfirmBehavior.Replace,
-        --     select = true,
-        -- },
-        -- ['<Up>'] = cmp.mapping(function(fallback)
-        --     if cmp.visible() then
-        --         cmp.select_prev_item()
-        --     else
-        --         fallback()
-        --     end
-        -- end, { "i", "s" }),
-        -- ['<Down>'] = cmp.mapping(function(fallback)
-        --     if cmp.visible() then
-        --         cmp.select_next_item()
-        --     else
-        --         fallback()
-        --     end
-        -- end, { "i", "s" }),
-        -- ["<Tab>"] = cmp.mapping(function(fallback)
-        --     if cmp.visible() then
-        --         local entry = cmp.get_selected_entry()
-        --         if not entry then
-        --             cmp.select_next_item({ behavior = cmp.SelectBehavior.Replace })
-        --         else
-        --             cmp.confirm()
-        --         end
-        --     else
-        --         fallback()
-        --     end
-        -- end, {"i", "s", "c", }),
     }),
     sources = cmp.config.sources({
         {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'luasnip'},
