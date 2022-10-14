@@ -1,4 +1,8 @@
-" source ~/.config/nvim/plugins.vim
+lua << EOF
+  if pcall(require, 'plenary.reload') then
+    require('plenary.reload').reload_module('natashz')
+  end
+EOF
 lua require'natashz'
 
 " Colour scheme

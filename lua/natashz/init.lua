@@ -1,1 +1,2 @@
-require('natashz.plugins')
+require'natashz.plugins'
+require'natashz.command'

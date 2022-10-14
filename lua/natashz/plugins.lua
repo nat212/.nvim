@@ -28,7 +28,7 @@ return require('packer').startup(function(use)
     -- ~ Aesthetics ~
     use {'dracula/vim', as = 'dracula', config = 'vim.cmd[[colo dracula]]'}
     use {'gruvbox-community/gruvbox'}
-    use 'kyazdani42/nvim-web-devicons'
+    use {'kyazdani42/nvim-web-devicons'}
     use {
         'nvim-lualine/lualine.nvim',
         config = function() require('natashz.statusline') end,
@@ -60,11 +60,11 @@ return require('packer').startup(function(use)
 
     -- Git
     use {
-        {
+        'tpope/vim-fugitive', 'junegunn/gv.vim', {
             'lewis6991/gitsigns.nvim',
             config = function() require'gitsigns'.setup() end,
             requires = {'nvim-lua/plenary.nvim'}
-        }, 'tpope/vim-fugitive', 'junegunn/gv.vim'
+        }
     }
 
     -- Telescope
@@ -72,12 +72,11 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim',
         requires = {
             'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim',
-            'kyazdani42/nvim-web-devicons',
+            'FeiyouG/command_center.nvim', 'LinArcX/telescope-changes.nvim',
             'nvim-telescope/telescope-file-browser.nvim', {
                 'nvim-telescope/telescope-fzf-native.nvim',
                 run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
-            }, 'FeiyouG/command_center.nvim', 'LinArcX/telescope-changes.nvim'
-
+            }
         },
         config = function() require('natashz.telescope') end
     }
@@ -89,10 +88,10 @@ return require('packer').startup(function(use)
     }
 
     -- Movement/Utilities
-    use {
-        {'mg979/vim-visual-multi', branch = 'master'}, 'tpope/vim-surround',
-        'tpope/vim-commentary', 'ThePrimeagen/harpoon'
-    }
+    use {'mg979/vim-visual-multi', branch = 'master'}
+    use {'tpope/vim-surround'}
+    use {'tpope/vim-commentary'}
+    use {'ThePrimeagen/harpoon'}
 
     -- LSP Stuff
     use {
@@ -109,9 +108,7 @@ return require('packer').startup(function(use)
         requires = {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip',
-            'L3MON4D3/LuaSnip', 'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim', 'neovim/nvim-lspconfig'
-
+            'neovim/nvim-lspconfig', 'L3MON4D3/LuaSnip'
         },
         config = function() require('natashz.lsp') end
     }
@@ -152,12 +149,12 @@ return require('packer').startup(function(use)
     }
 
     -- Other language stuff
+    use {'rust-lang/rust.vim'}
+    use {'editorconfig/editorconfig-vim'}
     use {
-        'rust-lang/rust.vim', 'editorconfig/editorconfig-vim', {
-            'iamcco/markdown-preview.nvim',
-            run = 'cd app && yarn install',
-            cmd = 'MarkdownPreview'
-        }
+        'iamcco/markdown-preview.nvim',
+        run = 'cd app && yarn install',
+        ft = {'markdown'}
     }
 
     -- Autopairs
@@ -169,8 +166,11 @@ return require('packer').startup(function(use)
         'windwp/nvim-ts-autotag',
         requires = {'nvim-treesitter/nvim-treesitter'},
         config = function() require('nvim-ts-autotag').setup() end,
-        ft = {'html', 'typescriptreact', 'javascriptreact', 'vue', 'svelte'},
+        ft = {'html', 'typescriptreact', 'javascriptreact', 'vue', 'svelte'}
     }
+
+    -- Copilot
+    use { 'github/copilot.vim' }
 
     if packer_bootstrap then require('packer').sync() end
 end)

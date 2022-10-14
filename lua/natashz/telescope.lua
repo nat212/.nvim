@@ -25,6 +25,7 @@ telescope.setup {
 -- Extensions
 telescope.load_extension 'file_browser'
 telescope.load_extension 'fzf'
+telescope.load_extension 'command_center'
 
 -- Keybinds
 
@@ -68,3 +69,6 @@ vim.keymap.set('n', ';t', builtin.reloader)
 vim.keymap.set('n', ';y', require'telescope'.extensions.neoclip.neoclip)
 -- Command center
 vim.keymap.set('n', ';c', require'telescope'.extensions.command_center.command_center)
+
+-- Load command center
+require('natashz.command')
