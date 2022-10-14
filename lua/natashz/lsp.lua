@@ -1,20 +1,3 @@
--- Setup
-require('mason').setup()
-require('mason-lspconfig').setup {}
-require('nvim-autopairs').setup {}
-require('symbols-outline').setup {
-    highlight_hovered_item = true,
-    show_guides = true,
-    auto_close = true
-}
-
-local saga = require('lspsaga')
-saga.init_lsp_saga {
-  server_filetype_map = {
-    typescript = 'typescript'
-  },
-}
-
 -- Symbols keybinding
 local toggle_outline = function() vim.cmd('SymbolsOutline') end
 vim.keymap.set('n', '<C-O>', toggle_outline, {silent = true})
@@ -38,10 +21,10 @@ vim.keymap.set('t', '<C-`>', [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts
 local on_attach = function(client, bufnr)
     local bufopts = {noremap = true, silent = true, buffer = bufnr}
     -- Gotos
-    vim.keymap.set('n', 'gd', '<Cmd>Lspsaga lsp_finder<CR>', bufopts)
+    vim.keymap.set('n', '<space>d', '<Cmd>Lspsaga lsp_finder<CR>', bufopts)
     -- Hints/Help
     vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', bufopts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set('n', '<C-j>', vim.lsp.buf.signature_help, bufopts)
     -- Workspaces
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
     vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder,
@@ -50,8 +33,8 @@ local on_attach = function(client, bufnr)
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts)
     -- Refactors/Format
-    vim.keymap.set('n', '<space>rn', '<Cmd>Lspsaga rename<CR>', bufopts)
-    vim.keymap.set('n', '<A-CR>', '<Cmd>Lspsaga code_action<CR>', bufopts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<A-CR>', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', '<space>f',
                    '<Cmd>Neoformat<CR>', bufopts)
 end
@@ -157,20 +140,3 @@ cmp.setup({
 })
 
 require('luasnip.loaders.from_vscode').lazy_load()
-
--- Treeshaker
-require'nvim-treesitter.configs'.setup {
-    highlight = {enable = true},
-    indent = {enable = true},
-    ensure_installed = {
-        "tsx",
-        "toml",
-        "json",
-        "yaml",
-        "css",
-        "html",
-        "lua",
-        "markdown",
-    },
-    autotag = {enable = true}
-}

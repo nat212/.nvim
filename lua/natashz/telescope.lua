@@ -12,11 +12,19 @@ telescope.setup {
         buffers = {theme = 'dropdown'},
         git_branches = {theme = 'dropdown'}
     },
-    extensions = {file_browser = {hijack_netrw = true, theme = 'dropdown'}}
+    extensions = {
+        file_browser = {hijack_netrw = true, theme = 'dropdown'},
+        lsp_handlers = {
+            code_action = {
+                telescope = require('telescope.themes').get_dropdown({})
+            }
+        }
+    }
 }
 
 -- Extensions
 telescope.load_extension 'file_browser'
+telescope.load_extension 'fzf'
 
 -- Keybinds
 
@@ -24,7 +32,7 @@ telescope.load_extension 'file_browser'
 vim.keymap.set('n', ';f',
                function() builtin.git_files({show_untracked = true}) end)
 -- Git branches
-vim.keymap.set('n', ';g', function() builtin.git_branches() end)
+vim.keymap.set('n', ';gb', function() builtin.git_branches() end)
 -- Live grep
 vim.keymap.set('n', ';r', function() builtin.live_grep() end)
 -- Buffers
@@ -51,8 +59,12 @@ end, {noremap = true})
 -- Planets
 vim.keymap.set('n', ';p', builtin.planets)
 -- Colour schemes
-vim.keymap.set('n', ';c', builtin.git_commits)
+vim.keymap.set('n', ';gc', builtin.git_commits)
 -- Symbols
 vim.keymap.set('n', ';o', builtin.treesitter)
 -- Treesitter
 vim.keymap.set('n', ';t', builtin.reloader)
+-- neoclip
+vim.keymap.set('n', ';y', require'telescope'.extensions.neoclip.neoclip)
+-- Command center
+vim.keymap.set('n', ';c', require'telescope'.extensions.command_center.command_center)
