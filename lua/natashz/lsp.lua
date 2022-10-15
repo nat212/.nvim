@@ -37,6 +37,7 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', '<A-CR>', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', '<space>f',
                    '<Cmd>Neoformat<CR>', bufopts)
+    vim.keymap.set('n', '<space>o', ':OrganiseImports<CR>', bufopts)
 end
 
 -- Organise TS imports

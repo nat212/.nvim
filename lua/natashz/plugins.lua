@@ -128,7 +128,7 @@ return require('packer').startup(function(use)
         'glepnir/lspsaga.nvim',
         config = function()
             require('lspsaga').init_lsp_saga {
-                server_filetype_map = {typescript = 'typescript'}
+                code_action_lightbulb = {enable = false}
             }
         end
     }
@@ -170,7 +170,7 @@ return require('packer').startup(function(use)
     }
 
     -- Copilot
-    use { 'github/copilot.vim' }
+    use {'github/copilot.vim'}
 
     if packer_bootstrap then require('packer').sync() end
 end)

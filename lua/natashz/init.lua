@@ -1,2 +1,5 @@
 require'natashz.plugins'
 require'natashz.command'
+require'natashz.sets'
+require'natashz.git'
+require'natashz.mappings'

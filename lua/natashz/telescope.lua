@@ -47,8 +47,8 @@ vim.keymap.set('n', ';e', function() builtin.diagnostics() end)
 -- File browser
 vim.keymap.set('n', ';b', function()
     telescope.extensions.file_browser.file_browser({
-        path = '%:p:h',
-        cwd = telescope_buffer_dir(),
+        -- path = '%:p:h',
+        -- cwd = telescope_buffer_dir(),
         respect_gitignore = false,
         hidden = true,
         grouped = true,

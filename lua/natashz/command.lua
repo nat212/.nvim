@@ -4,7 +4,7 @@ local function reload_modules()
   if pcall(require, 'plenary') then
     require('plenary.reload').reload_module('natashz')
   end
-  local modules = {'telescope', 'lsp', 'statusline', 'tabs'}
+  local modules = {'telescope', 'lsp', 'statusline', 'tabs', 'git', 'sets'}
   for _, value in ipairs(modules) do
     require('natashz.'..value)
   end
