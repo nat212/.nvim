@@ -53,10 +53,10 @@ return require('packer').startup(function(use)
     }
     -- TODO: Replace when bufferline updates to v3
     use {
-        '~/Development/Personal/Vim/bufferline.nvim',
+        'akinsho/bufferline.nvim',
+	branch = 'dev',
         config = function() require('natashz.tabs') end
     }
-    -- use {'akinsho/bufferline.nvim', tag = 'v3.*'}
 
     -- Git
     use {
