@@ -1,10 +1,10 @@
 local keymap = require'natashz.keymap'
 
 -- Actually good end/start of line bindings
-keymap.nnoremap('L', '$')
-keymap.nnoremap('H', '^')
-keymap.nnoremap('$', 'L')
-keymap.nnoremap('^', 'H')
+keymap.noremap('L', '$')
+keymap.noremap('H', '^')
+keymap.noremap('$', 'L')
+keymap.noremap('^', 'H')
 
 -- Cyka pasta
 keymap.vnoremap('<leader>p', '"_dP')
