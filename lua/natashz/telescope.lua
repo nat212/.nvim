@@ -26,6 +26,7 @@ telescope.setup {
 telescope.load_extension 'file_browser'
 telescope.load_extension 'fzf'
 telescope.load_extension 'command_center'
+telescope.load_extension 'todo-comments'
 
 -- Keybinds
 
@@ -63,8 +64,8 @@ vim.keymap.set('n', ';p', builtin.planets)
 vim.keymap.set('n', ';gc', builtin.git_commits)
 -- Symbols
 vim.keymap.set('n', ';o', builtin.treesitter)
--- Treesitter
-vim.keymap.set('n', ';t', builtin.reloader)
+-- TODOs
+vim.keymap.set('n', ';t', require'telescope'.extensions['todo-comments'].todo)
 -- neoclip
 vim.keymap.set('n', ';y', require'telescope'.extensions.neoclip.neoclip)
 -- Command center

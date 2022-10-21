@@ -51,10 +51,9 @@ return require('packer').startup(function(use)
             }
         end
     }
-    -- TODO: Replace when bufferline updates to v3
     use {
         'akinsho/bufferline.nvim',
-	branch = 'dev',
+        tag = 'v3.*',
         config = function() require('natashz.tabs') end
     }
 
@@ -87,11 +86,20 @@ return require('packer').startup(function(use)
         config = function() require'neoclip'.setup() end
     }
 
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function() require("todo-comments").setup {} end
+    }
+
     -- Movement/Utilities
     use {'mg979/vim-visual-multi', branch = 'master'}
     use {'tpope/vim-surround'}
     use {'tpope/vim-commentary'}
-    use {'ThePrimeagen/harpoon'}
+    use {
+        'ThePrimeagen/harpoon',
+        config = function() require 'natashz.harpoon' end
+    }
 
     -- LSP Stuff
     use {

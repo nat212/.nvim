@@ -14,6 +14,9 @@ keymap.nnoremap('<leader>Y', 'gg"+yG')
 keymap.nnoremap('<leader>d', '"_d') -- Delete without copying? Amazing!
 keymap.vnoremap('<leader>d', '"_d')
 
+-- Terminal
+keymap.tnoremap("<Esc>", "<C-\\><C-n>")
+
 vim.cmd([[
 augroup markdown_enable_preview
   autocmd!

@@ -17,7 +17,6 @@ vim.keymap.set('n', '<Tab>', '<Cmd>BufferLineCycleNext<CR>', opts)
 vim.keymap.set('n', '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', opts)
 
 -- Tab management
--- TODO: Figure out bufferline not refreshing
 vim.keymap.set('n', '<leader>tW', function()
     require'bufferline.commands'.close_in_direction('left', false)
     require'bufferline.commands'.close_in_direction('right', false)
