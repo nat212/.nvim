@@ -177,8 +177,8 @@ return require('packer').startup(function(use)
         ft = {'html', 'typescriptreact', 'javascriptreact', 'vue', 'svelte'}
     }
 
-    -- Copilot
-    use {'github/copilot.vim'}
+    -- Wakatime
+	use 'wakatime/vim-wakatime'
 
     if packer_bootstrap then require('packer').sync() end
 end)
