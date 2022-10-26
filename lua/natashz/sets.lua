@@ -7,6 +7,7 @@ vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undofile = true
+vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hidden = true
 vim.opt.errorbells = false
