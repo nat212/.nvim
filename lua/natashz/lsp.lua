@@ -8,14 +8,15 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Diagnostic bindings
 local opts = {noremap = true, silent = true}
-vim.keymap.set('n', '<space>e', '<Cmd>Lspsaga show_line_diagnostics<CR>', opts)
-vim.keymap.set('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 -- Terminal
 vim.keymap.set('n', '<C-`>', '<Cmd>Lspsaga open_floaterm<CR>', opts)
-vim.keymap.set('t', '<C-`>', [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
+vim.keymap
+    .set('t', '<C-`>', [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
 
 -- LSP bindings
 local on_attach = function(client, bufnr)
@@ -35,8 +36,7 @@ local on_attach = function(client, bufnr)
     -- Refactors/Format
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
     vim.keymap.set('n', '<A-CR>', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', '<space>f',
-                   '<Cmd>Neoformat<CR>', bufopts)
+    vim.keymap.set('n', '<space>f', '<Cmd>Neoformat<CR>', bufopts)
     vim.keymap.set('n', '<space>o', ':OrganiseImports<CR>', bufopts)
 end
 
@@ -51,53 +51,47 @@ local function ts_organise_imports()
 end
 
 local lspconfig = require('lspconfig')
--- Servers that don't require any additional setup
-local servers = {
-    'rust_analyzer',
-    'jsonls',
-    'angularls',
-    'html',
-    'eslint',
-    'tailwindcss',
-    'marksman',
-    'zk',
-    'prosemd_lsp',
-}
-for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup {capabilities = capabilities, on_attach = on_attach}
-end
 
--- Setup LUA server
-lspconfig['sumneko_lua'].setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-        Lua = {
-            runtime = {version = 'LuaJIT'},
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = {'vim'}
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true)
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {enable = false}
+require("mason-lspconfig").setup_handlers {
+    function(server_name) -- Default handler
+        lspconfig[server_name].setup {
+            capabilities = capabilities,
+            on_attach = on_attach
         }
-    }
-}
-
--- Setup tsserver
-lspconfig['tsserver'].setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    commands = {
-        OrganiseImports = {
-            ts_organise_imports,
-            description = "Organise Imports"
+    end,
+    ["sumneko_lua"] = function()
+        lspconfig['sumneko_lua'].setup {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = {
+                Lua = {
+                    runtime = {version = 'LuaJIT'},
+                    diagnostics = {
+                        -- Get the language server to recognize the `vim` global
+                        globals = {'vim'}
+                    },
+                    workspace = {
+                        -- Make the server aware of Neovim runtime files
+                        library = vim.api.nvim_get_runtime_file("", true)
+                    },
+                    -- Do not send telemetry data containing a randomized but unique identifier
+                    telemetry = {enable = false}
+                }
+            }
         }
-    }
+    end,
+    ["tsserver"] = function()
+        lspconfig["tsserver"].setup {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            commands = {
+                OrganiseImports = {
+                    ts_organise_imports,
+                    description = "Organise Imports"
+                }
+            }
+        }
+    end
 }
 
 -- Snippets + completion
