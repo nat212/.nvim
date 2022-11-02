@@ -23,9 +23,11 @@ local on_attach = function(client, bufnr)
     local bufopts = {noremap = true, silent = true, buffer = bufnr}
     -- Gotos
     vim.keymap.set('n', '<space>d', '<Cmd>Lspsaga lsp_finder<CR>', bufopts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     -- Hints/Help
-    vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', bufopts)
-    vim.keymap.set('n', '<C-j>', vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('i', '<C-j>', vim.lsp.buf.signature_help, bufopts)
     -- Workspaces
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
     vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder,
@@ -137,3 +139,6 @@ cmp.setup({
 -- Snippets
 require('luasnip.loaders.from_snipmate').lazy_load()
 require('luasnip.loaders.from_vscode').lazy_load()
+
+-- Neoformat options
+vim.g.neoformat_run_all_formatters = 1
