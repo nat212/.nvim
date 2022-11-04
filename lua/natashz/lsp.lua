@@ -93,6 +93,15 @@ require("mason-lspconfig").setup_handlers {
                 }
             }
         }
+    end,
+    ["angularls"] = function()
+        lspconfig["angularls"].setup {
+            on_attach = function(client, buffer)
+                client.server_capabilities.renameProvider = false
+                on_attach(client, buffer)
+            end,
+            capabilities = capabilities
+        }
     end
 }
 
