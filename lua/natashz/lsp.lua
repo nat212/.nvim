@@ -105,6 +105,8 @@ require("mason-lspconfig").setup_handlers {
     end
 }
 
+lspconfig.gdscript.setup {on_attach = on_attach, capabilities = capabilities}
+
 -- Snippets + completion
 local luasnip = require 'luasnip'
 local cmp = require 'cmp'
