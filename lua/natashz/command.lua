@@ -15,5 +15,5 @@ command.add({
         desc = 'Reload neovim configs',
         cmd = reload_modules,
         keys = {'n', '<F5>'}
-    }
+    },
 }, { mode = command.mode.SET_ADD })

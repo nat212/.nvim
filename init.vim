@@ -7,6 +7,7 @@ lua require'natashz'
 
 " Colour scheme
 set background=dark
+set guifont=Iosevka
 
 " Highlight when yanking
 augroup highlight_yank

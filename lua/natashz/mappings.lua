@@ -1,5 +1,7 @@
 local keymap = require'natashz.keymap'
 
+local var = {}
+
 -- Actually good end/start of line bindings
 keymap.noremap('L', '$')
 keymap.noremap('H', '^')
@@ -16,6 +18,9 @@ keymap.vnoremap('<leader>d', '"_d')
 
 -- Terminal
 keymap.tnoremap("<Esc>", "<C-\\><C-n>")
+
+-- Quickfix
+keymap.nmap("<leader>qc", "<Cmd>cclose<CR>") -- Close quickfix window
 
 vim.cmd([[
 augroup markdown_enable_preview

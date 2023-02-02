@@ -15,12 +15,12 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+-- vim.cmd([[
+--   augroup packer_user_config
+--     autocmd!
+--     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+--   augroup end
+-- ]])
 
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
@@ -56,6 +56,9 @@ return require('packer').startup(function(use)
         tag = 'v3.*',
         config = function() require('natashz.tabs') end
     }
+		use {'rcarriga/nvim-notify', config = function ()
+			vim.notify = require('notify')
+		end}
 
     -- Git
     use {
@@ -100,8 +103,15 @@ return require('packer').startup(function(use)
         'ThePrimeagen/harpoon',
         config = function() require 'natashz.harpoon' end
     }
+	use {'voldikss/vim-floaterm', config = function ()
+		require 'natashz.floaterm'
+	end}
 
     -- LSP Stuff
+    use 'mfussenegger/nvim-jdtls'
+	use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim', config = function ()
+		require'natashz.flutter'.setup()
+	end}
     use {
         {
             'williamboman/mason.nvim',
@@ -135,7 +145,7 @@ return require('packer').startup(function(use)
     use {
         'glepnir/lspsaga.nvim',
         config = function()
-            require('lspsaga').init_lsp_saga {
+            require('lspsaga').setup {
                 code_action_lightbulb = {enable = false}
             }
         end
@@ -150,7 +160,10 @@ return require('packer').startup(function(use)
         config = function()
             require'nvim-treesitter.configs'.setup {
                 highlight = {enable = true},
-                indent = {enable = true},
+                indent = {
+					enable = true,
+					disable = {'yaml'},
+				},
                 auto_install = true
             }
         end

@@ -18,3 +18,7 @@ vim.opt.cmdheight = 1
 vim.opt.updatetime = 50
 vim.opt.shortmess:append('c')
 vim.opt.colorcolumn = '80'
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.smarttab = true
+vim.opt.splitright = true

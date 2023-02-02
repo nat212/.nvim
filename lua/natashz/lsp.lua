@@ -2,45 +2,8 @@
 local toggle_outline = function() vim.cmd('SymbolsOutline') end
 vim.keymap.set('n', '<C-O>', toggle_outline, {silent = true})
 
--- Capabilities to connect LSP to vim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Diagnostic bindings
-local opts = {noremap = true, silent = true}
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-
--- Terminal
-vim.keymap.set('n', '<C-`>', '<Cmd>Lspsaga open_floaterm<CR>', opts)
-vim.keymap
-    .set('t', '<C-`>', [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
-
--- LSP bindings
-local on_attach = function(client, bufnr)
-    local bufopts = {noremap = true, silent = true, buffer = bufnr}
-    -- Gotos
-    vim.keymap.set('n', '<space>d', '<Cmd>Lspsaga lsp_finder<CR>', bufopts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-    -- Hints/Help
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('i', '<C-j>', vim.lsp.buf.signature_help, bufopts)
-    -- Workspaces
-    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder,
-                   bufopts)
-    vim.keymap.set('n', '<space>wl', function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, bufopts)
-    -- Refactors/Format
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', '<A-CR>', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', '<space>f', '<Cmd>Neoformat<CR>', bufopts)
-    vim.keymap.set('n', '<space>o', ':OrganiseImports<CR>', bufopts)
-end
+local capabilities = require'natashz.lsp_common'.capabilities
+local on_attach = require'natashz.lsp_common'.on_attach
 
 -- Organise TS imports
 local function ts_organise_imports()
@@ -52,6 +15,15 @@ local function ts_organise_imports()
     vim.lsp.buf.execute_command(params)
 end
 
+local function dart_organise_imports()
+	local params = {
+		command = "",
+		arguments = {vim.api.nvim_buf_get_name(0)},
+		title = ""
+	}
+	vim.lsp.buf.execute_command(params)
+end
+
 local lspconfig = require('lspconfig')
 
 require("mason-lspconfig").setup_handlers {
@@ -61,6 +33,58 @@ require("mason-lspconfig").setup_handlers {
             on_attach = on_attach
         }
     end,
+	["pylsp"] = function (server_name)
+		lspconfig[server_name].setup {
+			capabilities = capabilities,
+			on_attach = on_attach,
+			pylsp = {
+				plugins = {
+					rope_autoimport = {
+						enabled = true,
+					},
+					pycodestyle = {
+						enabled = false,
+					},
+					flake8 = {
+						enabled = false,
+					}
+				},
+			},
+		}
+	end,
+    ["jdtls"] = function ()
+        -- vim.cmd([[
+        --     augroup jdtls
+        --         autocmd!
+        --         autocmd FileType java lua require'natashz.jdtls_setup'.setup()
+        --     augroup end
+        -- ]])
+	-- lspconfig['jdtls'].setup {
+	-- 	capabilities = capabilities,
+	-- 	on_attach = on_attach,
+	-- 	cmd = {
+	-- 		"java",
+	-- 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+	-- 		"-Dosgi.bundles.defaultStartLevel=4",
+	-- 		"-Declipse.product=org.eclipse.jdt.ls.core.product",
+	-- 		"-Dlog.protocol=true",
+	-- 		"-Dlog.level=ALL",
+	-- 		"-Xms1g",
+	-- 		"--add-modules=ALL-SYSTEM",
+	-- 		"--add-opens",
+	-- 		"java.base/java.util=ALL-UNNAMED",
+	-- 		"--add-opens",
+	-- 		"java.base/java.lang=ALL-UNNAMED",
+	-- 		"-jar",
+	-- 		"C:/tools/jdt-language-server/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+	-- 		"-configuration",
+	-- 		"C:/tools/jdt-language-server/config_win",
+	-- 	},
+	-- 	root_dir = function(fname)
+	-- 		return require("lspconfig").util.root_pattern("pom.xml", "gradle.build", ".git")(fname) or vim.fn.getcwd()
+	-- 	end,
+	-- }
+    end, -- Use nvim-jdtls
     ["sumneko_lua"] = function()
         lspconfig['sumneko_lua'].setup {
             capabilities = capabilities,
@@ -102,7 +126,16 @@ require("mason-lspconfig").setup_handlers {
             end,
             capabilities = capabilities
         }
-    end
+    end,
+	["csharp_ls"] = function ()
+		lspconfig["csharp_ls"].setup {
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_dir = function(fname)
+				return require("lspconfig").util.root_pattern(".git", "*.sln")(fname) or vim.fn.getcwd()
+			end,
+		}
+	end
 }
 
 lspconfig.gdscript.setup {on_attach = on_attach, capabilities = capabilities}
@@ -152,4 +185,12 @@ require('luasnip.loaders.from_snipmate').lazy_load()
 require('luasnip.loaders.from_vscode').lazy_load()
 
 -- Neoformat options
-vim.g.neoformat_run_all_formatters = 1
+-- vim.g.neoformat_run_all_formatters = 1
+vim.g.neoformat_only_msg_on_error = 1
+
+-- TypeScript & JavaScript
+local js_et_al_formatters = {'prettier'}
+vim.g.neoformat_enabled_typescript = js_et_al_formatters
+vim.g.neoformat_enabled_javascript = js_et_al_formatters
+vim.g.neoformat_enabled_javascriptreact = js_et_al_formatters
+vim.g.neoformat_enabled_typescriptreact = js_et_al_formatters

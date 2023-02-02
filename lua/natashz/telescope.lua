@@ -22,17 +22,31 @@ telescope.setup {
     }
 }
 
+-- Project files
+local project_files = function ()
+	vim.fn.system('git rev-parse --is-inside-work-tree')
+	if vim.v.shell_error == 0 then
+		require'telescope.builtin'.git_files({ show_untracked = true })
+	else
+		require'telescope.builtin'.find_files()
+	end
+end
+
+local function load_telescope_plugin(plugin)
+	pcall(telescope.load_extension, plugin)
+end
+
 -- Extensions
-telescope.load_extension 'file_browser'
-telescope.load_extension 'fzf'
-telescope.load_extension 'command_center'
-telescope.load_extension 'todo-comments'
+load_telescope_plugin('file_browser')
+load_telescope_plugin('fzf')
+load_telescope_plugin('command_center')
+load_telescope_plugin('todo-comments')
+load_telescope_plugin('flutter')
 
 -- Keybinds
 
 -- Git files
-vim.keymap.set('n', ';f',
-               function() builtin.git_files({show_untracked = true}) end)
+vim.keymap.set('n', ';f', project_files)
 -- Git branches
 vim.keymap.set('n', ';gb', function() builtin.git_branches() end)
 -- Live grep
@@ -70,6 +84,8 @@ vim.keymap.set('n', ';t', require'telescope'.extensions['todo-comments'].todo)
 vim.keymap.set('n', ';y', require'telescope'.extensions.neoclip.neoclip)
 -- Command center
 vim.keymap.set('n', ';c', require'telescope'.extensions.command_center.command_center)
+-- Flutter tools
+vim.keymap.set('n', ';df', require'telescope'.extensions.flutter.commands)
 
 -- Load command center
 require('natashz.command')
