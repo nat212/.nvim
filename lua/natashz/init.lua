@@ -1,5 +1,5 @@
-require'natashz.plugins'
-require'natashz.sets'
-require'natashz.git'
-require'natashz.mappings'
-require'natashz.python'
+require("natashz.plugins")
+require("natashz.sets")
+require("natashz.git")
+require("natashz.mappings")
+require("natashz.python")

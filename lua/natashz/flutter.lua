@@ -1,17 +1,16 @@
 local M = {}
 
-local capabilities = require'natashz.lsp_common'.capabilities
-local on_attach = require'natashz.lsp_common'.on_attach
+local capabilities = require("natashz.lsp_common").capabilities
+local on_attach = require("natashz.lsp_common").on_attach
 
-M.setup = function ()
-	require'flutter-tools'.setup {
+M.setup = function()
+	require("flutter-tools").setup({
 		lsp = {
 			on_attach = on_attach,
 			capabilities = capabilities,
 			color = {
 				enabled = true,
 				background = true,
-				foreground = true,
 				virtual_text = true,
 			},
 			settings = {
@@ -22,10 +21,11 @@ M.setup = function ()
 			},
 		},
 		ui = {
-			notification_style = 'native',
+			notification_style = "native",
 		},
 		dev_log = {
-			enabled = false,
+			enabled = true,
+			open_cmd = "FloatermNew tail -f",
 		},
 		widget_guides = {
 			enabled = true,
@@ -35,7 +35,6 @@ M.setup = function ()
 				device = true,
 			},
 		},
-	}
+	})
 end
-
 return M
