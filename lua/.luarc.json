@@ -56,6 +56,7 @@
         "C:\\Users\\natasha.draper\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\dracula\\after",
         "C:\\Users\\natasha.draper\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\rust.vim\\after",
         "${3rd}/luassert/library",
-        "${3rd}/luassert/library"
+        "${3rd}/luassert/library",
+        "${3rd}/luv/library"
     ]
 }

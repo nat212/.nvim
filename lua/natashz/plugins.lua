@@ -122,12 +122,6 @@ return require("packer").startup(function(use)
 	use({ "mg979/vim-visual-multi", branch = "master" })
 	use({ "tpope/vim-surround" })
 	use({ "tpope/vim-commentary" })
-	-- use({
-	-- 	"ThePrimeagen/harpoon",
-	-- 	config = function()
-	-- 		require("natashz.harpoon")
-	-- 	end,
-	-- })
 	use({
 		"voldikss/vim-floaterm",
 		config = function()
@@ -190,7 +184,7 @@ return require("packer").startup(function(use)
 		"glepnir/lspsaga.nvim",
 		config = function()
 			require("lspsaga").setup({
-				code_action_lightbulb = { enable = false },
+				lightbulb = { enable = false },
 			})
 		end,
 	})
@@ -199,7 +193,7 @@ return require("packer").startup(function(use)
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = function()
-			require("nvim-treesitter.install").update({ with_sync = true })
+			require("nvim-treesitter.install").update({ with_sync = false })
 		end,
 		config = function()
 			require("nvim-treesitter.configs").setup({
@@ -218,7 +212,7 @@ return require("packer").startup(function(use)
 		"rcarriga/nvim-dap-ui",
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
-			require("dapui").setup()
+      require("natashz.dap").setup()
 		end,
 	})
 

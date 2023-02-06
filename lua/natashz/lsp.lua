@@ -22,15 +22,6 @@ local function ts_organise_imports()
 	vim.lsp.buf.execute_command(params)
 end
 
-local function dart_organise_imports()
-	local params = {
-		command = "",
-		arguments = { vim.api.nvim_buf_get_name(0) },
-		title = "",
-	}
-	vim.lsp.buf.execute_command(params)
-end
-
 local lspconfig = require("lspconfig")
 
 require("mason-lspconfig").setup_handlers({
@@ -210,7 +201,7 @@ cmp.setup({
 	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
-		{ name = "buffer" },
+		-- { name = "buffer" },
 		{ name = "luasnip" },
 		{ name = "path" },
 	}),
@@ -225,8 +216,17 @@ require("luasnip.loaders.from_vscode").lazy_load()
 vim.g.neoformat_only_msg_on_error = 1
 
 -- TypeScript & JavaScript
-local js_et_al_formatters = { "prettier" }
-vim.g.neoformat_enabled_typescript = js_et_al_formatters
-vim.g.neoformat_enabled_javascript = js_et_al_formatters
-vim.g.neoformat_enabled_javascriptreact = js_et_al_formatters
-vim.g.neoformat_enabled_typescriptreact = js_et_al_formatters
+local prettier = { "prettier" }
+vim.g.neoformat_enabled_typescript = prettier
+vim.g.neoformat_enabled_javascript = prettier
+vim.g.neoformat_enabled_javascriptreact = prettier
+vim.g.neoformat_enabled_typescriptreact = prettier
+vim.g.neoformat_enabled_svelte = prettier
+vim.g.neoformat_enabled_html = prettier
+vim.g.neoformat_enabled_css = prettier
+vim.g.neoformat_enabled_scss = prettier
+vim.g.neoformat_enabled_sass = prettier
+
+-- Python
+local py_formatters = {"black", "isort"}
+vim.g.neoformat_enabled_python = py_formatters
