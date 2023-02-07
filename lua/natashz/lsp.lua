@@ -31,9 +31,49 @@ require("mason-lspconfig").setup_handlers({
 			on_attach = on_attach,
 		})
 	end,
-	["pylsp"] = function(server_name)
+	["powershell_es"] = function(server_name)
+		local ps_bundle
+		if require("natashz.util").is_windows then
+			ps_bundle = vim.fs.normalize("C:/src/PowerShellEditorServices")
+		end
 		lspconfig[server_name].setup({
-			cmd = { "pylsp" },
+			bundle_path = ps_bundle,
+		})
+	end,
+	["diagnosticls"] = function(server_name)
+		lspconfig[server_name].setup({
+			filetypes = {
+				"python",
+				"typescript",
+				"javascript",
+				"html",
+				"css",
+				"scss",
+				"less",
+				"typescriptreact",
+				"javascriptreact",
+				"svelte",
+				"vue",
+			},
+			root_dir = function(fname)
+				return require("lspconfig").util.root_pattern(
+					".git",
+					"setup.cfg",
+					"pyproject.toml",
+					"tox.ini",
+					"package.json",
+					"yarn.lock",
+					"Pipfile",
+					"Pipfile.lock"
+				)(fname) or vim.fn.getcwd()
+			end,
+		})
+	end,
+	["pylsp"] = function(server_name)
+		local python3_path = vim.fs.dirname(vim.g.python3_host_prog)
+		local pylsp_path = python3_path .. "/pylsp"
+		lspconfig[server_name].setup({
+			cmd = { pylsp_path },
 			capabilities = capabilities,
 			on_attach = on_attach,
 			commands = {
@@ -228,5 +268,5 @@ vim.g.neoformat_enabled_scss = prettier
 vim.g.neoformat_enabled_sass = prettier
 
 -- Python
-local py_formatters = {"black", "isort"}
+local py_formatters = { "black", "isort" }
 vim.g.neoformat_enabled_python = py_formatters
