@@ -11,14 +11,14 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
 
 -- Terminal
-vim.keymap.set("n", "<C-`>", "<Cmd>Lspsaga open_floaterm<CR>", opts)
-vim.keymap.set("t", "<C-`>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
+-- vim.keymap.set("n", "<C-`>", "<Cmd>Lspsaga open_floaterm<CR>", opts)
+-- vim.keymap.set("t", "<C-`>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
 
 -- LSP bindings
 M.on_attach = function(client, bufnr)
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 	-- Gotos
-	vim.keymap.set("n", "<space>d", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
+	-- vim.keymap.set("n", "<space>d", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
 	vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
@@ -37,9 +37,7 @@ M.on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 	vim.keymap.set("n", "<A-CR>", vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set("x", "<A-CR>", vim.lsp.buf.range_code_action, bufopts)
-	vim.keymap.set("n", "<space>f", function()
-		vim.lsp.buf.format({ async = true })
-	end, bufopts)
+	vim.keymap.set("n", "<space>f", "<Cmd>Neoformat<CR>", bufopts)
 	vim.keymap.set("n", "<space>o", ":OrganiseImports<CR>", bufopts)
 end
 

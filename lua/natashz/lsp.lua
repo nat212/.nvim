@@ -31,6 +31,9 @@ require("mason-lspconfig").setup_handlers({
 			on_attach = on_attach,
 		})
 	end,
+  ["sumneko_lua"] = function ()
+    -- Let neodev handle it.
+  end,
 	["powershell_es"] = function(server_name)
 		local ps_bundle
 		if require("natashz.util").is_windows then
@@ -141,30 +144,6 @@ require("mason-lspconfig").setup_handlers({
 		-- 	end,
 		-- }
 	end, -- Use nvim-jdtls
-	["sumneko_lua"] = function()
-		lspconfig["sumneko_lua"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				Lua = {
-					runtime = { version = "LuaJIT" },
-					diagnostics = {
-						-- Get the language server to recognize the `vim` global
-						globals = { "vim" },
-					},
-					completion = {
-						callSnippet = "Replace",
-					},
-					workspace = {
-						-- Make the server aware of Neovim runtime files
-						library = vim.api.nvim_get_runtime_file("", true),
-					},
-					-- Do not send telemetry data containing a randomized but unique identifier
-					telemetry = { enable = false },
-				},
-			},
-		})
-	end,
 	["tsserver"] = function()
 		lspconfig["tsserver"].setup({
 			capabilities = capabilities,

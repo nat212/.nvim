@@ -18,12 +18,12 @@ end
 
 local packer_bootstrap = ensure_packer()
 
--- vim.cmd([[
---   augroup packer_user_config
---     autocmd!
---     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
---   augroup end
--- ]])
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
 
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
@@ -129,6 +129,14 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	use({
+		"akinsho/toggleterm.nvim",
+		tag = "*",
+		config = function()
+      require("natashz.toggleterm").setup()
+		end,
+	})
+
 	-- LSP Stuff
 	use("mfussenegger/nvim-jdtls")
 	use({
@@ -151,7 +159,7 @@ return require("packer").startup(function(use)
 				require("mason-lspconfig").setup({})
 			end,
 		},
-		"neovim/nvim-lspconfig",
+    "neovim/nvim-lspconfig",
 	})
 	use({
 		"hrsh7th/nvim-cmp",
@@ -163,8 +171,10 @@ return require("packer").startup(function(use)
 			"saadparwaiz1/cmp_luasnip",
 			"neovim/nvim-lspconfig",
 			"L3MON4D3/LuaSnip",
+      "folke/neodev.nvim",
 		},
 		config = function()
+      require("natashz.neodev").setup()
 			require("natashz.lsp")
 		end,
 	})
@@ -180,25 +190,26 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
-	use({
-		"glepnir/lspsaga.nvim",
-		config = function()
-			require("lspsaga").setup({
-				lightbulb = { enable = false },
-			})
-		end,
-	})
+	-- use({
+	-- 	"glepnir/lspsaga.nvim",
+	-- 	config = function()
+	-- 		require("lspsaga").setup({
+	-- 			lightbulb = { enable = false },
+	-- 		})
+	-- 	end,
+	-- })
 
 	-- Treesitter
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = function()
-			require("nvim-treesitter.install").update({ with_sync = false })
+			require("nvim-treesitter.install").update({ with_sync = true })
 		end,
 		config = function()
+			require("nvim-treesitter.install").prefer_git = false
 			require("nvim-treesitter.configs").setup({
 				highlight = { enable = true },
-        indent = { enable = true },
+				indent = { enable = true },
 				auto_install = true,
 			})
 		end,
@@ -207,9 +218,10 @@ return require("packer").startup(function(use)
 	-- DAP
 	use({
 		"rcarriga/nvim-dap-ui",
+    tag = "v3.4.0",
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
-      require("natashz.dap").setup()
+			require("natashz.dap").setup()
 		end,
 	})
 
@@ -220,17 +232,6 @@ return require("packer").startup(function(use)
 		"iamcco/markdown-preview.nvim",
 		run = "cd app && yarn install",
 		ft = { "markdown" },
-	})
-	use({
-		"folke/neodev.nvim",
-		config = function()
-			require("neodev").setup({
-				library = {
-					plugins = { "nvim-dap-ui" },
-					types = true,
-				},
-			})
-		end,
 	})
 
 	-- Autopairs

@@ -10,4 +10,10 @@ M.get_init_vim = function()
 	end
 end
 
+if M.is_windows then
+  M.shell = "pwsh"
+else
+  M.shell = nil
+end
+
 return M
