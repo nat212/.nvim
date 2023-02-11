@@ -105,4 +105,4 @@ vim.keymap.set("n", ";df", require("telescope").extensions.flutter.commands)
 vim.keymap.set("n", ";n", require("telescope").extensions.notify.notify)
 
 -- Load command center
-require("natashz.command")
+-- require("natashz.command")

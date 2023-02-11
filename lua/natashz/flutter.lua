@@ -1,4 +1,5 @@
 local M = {}
+local util = require("natashz.util")
 
 local capabilities = require("natashz.lsp_common").capabilities
 local on_attach = require("natashz.lsp_common").on_attach
@@ -17,17 +18,14 @@ local function dart_organise_imports()
 	vim.lsp.buf.execute_command(params)
 end
 
-M.setup = function()
-	local util = require("natashz.util")
-  local flutter_cmd
+local flutter_sdk_path
+if util.is_windows then
+	flutter_sdk_path = vim.fs.normalize("C:/src/flutter")
+else
+	flutter_sdk_path = os.getenv("HOME") .. "/flutter"
+end
 
-	if util.is_windows then
-		local nvim_dir = vim.fs.dirname(util.get_init_vim())
-		flutter_lookup_cmd = "pwsh " .. vim.fs.normalize(nvim_dir .. "/scripts/find-flutter.ps1")
-    flutter_cmd = vim.fs.normalize("C:/src/flutter/bin/flutter.bat")
-	else
-		flutter_lookup_cmd = "dirname $(which flutter)"
-	end
+M.setup = function()
 	require("flutter-tools").setup({
 		lsp = {
 			on_attach = on_attach,
@@ -55,7 +53,6 @@ M.setup = function()
 		},
 		dev_log = {
 			enabled = false,
-			open_cmd = "FloatermNew tail -f",
 		},
 		widget_guides = {
 			enabled = true,
@@ -69,14 +66,22 @@ M.setup = function()
 			enabled = true,
 			run_via_dap = true,
 			register_configurations = function(_)
-        require("dap").adapters.dart = {
-          type = "executable",
-          command = flutter_cmd,
-          args = {"debug_adapter"},
-        }
-				require("dap").configurations.dart = {}
-        require("dap.ext.vscode").load_launchjs(require("flutter-tools.lsp").get_lsp_root_dir() .. "/.vscode/launch.json")
-        print(vim.fn.json_encode(require("dap").configurations.dart))
+				require("dap").adapters.dart = {
+					type = "executable",
+          command = "node",
+					args = { util.cmds.dart_debug, "flutter" },
+				}
+				require("dap").configurations.dart = {
+					{
+						type = "dart",
+						request = "launch",
+						name = "Launch flutter",
+						dartSdkPath = vim.fs.normalize(flutter_sdk_path .. "/bin/cache/dart-sdk/"),
+						flutterSdkPath = flutter_sdk_path,
+						program = "${workspaceFolder}/lib/main.dart",
+						cwd = "${workspaceFolder}",
+					},
+				}
 			end,
 		},
 	})

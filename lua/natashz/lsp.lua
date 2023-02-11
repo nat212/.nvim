@@ -1,3 +1,4 @@
+local util = require "natashz.util"
 -- Symbols keybinding
 local toggle_outline = function()
 	vim.cmd("SymbolsOutline")
@@ -33,6 +34,17 @@ require("mason-lspconfig").setup_handlers({
 	end,
   ["sumneko_lua"] = function ()
     -- Let neodev handle it.
+  end,
+  ["omnisharp"] = function (server_name)
+    lspconfig[server_name].setup {
+      cmd = {util.cmds.omnisharp},
+      on_attach = on_attach,
+      capabilities = capabilities,
+      enable_editorconfig_support = true,
+      enable_roslyn_analyzers = true,
+      organize_imports_on_format = true,
+      enable_import_completion = true,
+    }
   end,
 	["powershell_es"] = function(server_name)
 		local ps_bundle

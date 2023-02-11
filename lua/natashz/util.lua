@@ -9,11 +9,20 @@ M.get_init_vim = function()
 		return vim.fs.normalize("$XDG_CONFIG_HOME/nvim/init.vim")
 	end
 end
+M.mason_dir = vim.fs.normalize(vim.fn.stdpath("data") .. "/mason")
+
+M.cmds = {
+	dart_debug = vim.fs.normalize(M.mason_dir .. "/packages/dart-debug-adapter/extension/out/dist/debug.js"),
+  omnisharp = "omnisharp",
+  delve = "dlv",
+}
 
 if M.is_windows then
-  M.shell = "pwsh"
+	M.shell = "pwsh"
+  M.cmds.omnisharp = "omnisharp.cmd"
+  M.cmds.delve = "dlv.cmd"
 else
-  M.shell = nil
+	M.shell = nil
 end
 
 return M

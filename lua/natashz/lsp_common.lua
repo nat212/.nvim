@@ -36,8 +36,13 @@ M.on_attach = function(client, bufnr)
 	-- Refactors/Format
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 	vim.keymap.set("n", "<A-CR>", vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set("x", "<A-CR>", vim.lsp.buf.range_code_action, bufopts)
-	vim.keymap.set("n", "<space>f", "<Cmd>Neoformat<CR>", bufopts)
+	vim.keymap.set("x", "<A-CR>", vim.lsp.buf.code_action, bufopts)
+	vim.keymap.set("n", "<space>f", function()
+		vim.lsp.buf.format({ async = true })
+	end, bufopts)
+	vim.keymap.set("v", "<space>f", function()
+		vim.lsp.buf.format({ async = true })
+	end)
 	vim.keymap.set("n", "<space>o", ":OrganiseImports<CR>", bufopts)
 end
 

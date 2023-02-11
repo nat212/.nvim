@@ -21,7 +21,7 @@ local packer_bootstrap = ensure_packer()
 vim.cmd([[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+    autocmd BufWritePost plugins.lua source <afile>
   augroup end
 ]])
 
@@ -133,7 +133,7 @@ return require("packer").startup(function(use)
 		"akinsho/toggleterm.nvim",
 		tag = "*",
 		config = function()
-      require("natashz.toggleterm").setup()
+			require("natashz.toggleterm").setup()
 		end,
 	})
 
@@ -159,7 +159,7 @@ return require("packer").startup(function(use)
 				require("mason-lspconfig").setup({})
 			end,
 		},
-    "neovim/nvim-lspconfig",
+		"neovim/nvim-lspconfig",
 	})
 	use({
 		"hrsh7th/nvim-cmp",
@@ -171,10 +171,10 @@ return require("packer").startup(function(use)
 			"saadparwaiz1/cmp_luasnip",
 			"neovim/nvim-lspconfig",
 			"L3MON4D3/LuaSnip",
-      "folke/neodev.nvim",
+			"folke/neodev.nvim",
 		},
 		config = function()
-      require("natashz.neodev").setup()
+			require("natashz.neodev").setup()
 			require("natashz.lsp")
 		end,
 	})
@@ -218,7 +218,7 @@ return require("packer").startup(function(use)
 	-- DAP
 	use({
 		"rcarriga/nvim-dap-ui",
-    tag = "v3.4.0",
+		tag = "v3.4.0",
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
 			require("natashz.dap").setup()
@@ -232,6 +232,30 @@ return require("packer").startup(function(use)
 		"iamcco/markdown-preview.nvim",
 		run = "cd app && yarn install",
 		ft = { "markdown" },
+	})
+	use({
+		"leoluz/nvim-dap-go",
+		config = function()
+			require("dap-go").setup({
+				dap_configurations = {
+					{
+						type = "go",
+						name = "Pocketbase Serve",
+						request = "launch",
+						program = "${fileDirname}",
+						args = { "serve" },
+					},
+				},
+			})
+		end,
+	})
+
+	-- Null-ls
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		config = function()
+			require("natashz.linting").setup()
+		end,
 	})
 
 	-- Autopairs
@@ -251,7 +275,7 @@ return require("packer").startup(function(use)
 	})
 
 	-- Wakatime
-	use("wakatime/vim-wakatime")
+	use({ "wakatime/vim-wakatime" })
 
 	if packer_bootstrap then
 		require("packer").sync()
