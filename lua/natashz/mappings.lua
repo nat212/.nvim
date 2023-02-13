@@ -1,5 +1,10 @@
 local keymap = require("natashz.keymap")
 
+local function close_quickfix()
+  vim.cmd([[cclose]])
+  require("natashz.dap").reset_layout()
+end
+
 -- Actually good end/start of line bindings
 keymap.noremap("L", "$")
 keymap.noremap("H", "^")

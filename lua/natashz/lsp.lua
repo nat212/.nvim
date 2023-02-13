@@ -2,6 +2,7 @@ local util = require("natashz.util")
 -- Symbols keybinding
 local toggle_outline = function()
   vim.cmd("SymbolsOutline")
+  require("natashz.dap").reset_layout()
 end
 vim.keymap.set("n", "<C-O>", toggle_outline, { silent = true })
 

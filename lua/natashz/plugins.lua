@@ -218,7 +218,6 @@ return require("packer").startup(function(use)
 	-- DAP
 	use({
 		"rcarriga/nvim-dap-ui",
-		tag = "v3.4.0",
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
 			require("natashz.dap").setup()
