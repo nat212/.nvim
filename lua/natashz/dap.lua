@@ -1,6 +1,5 @@
 local M = {}
 local keymap = require("natashz.keymap")
-local util = require("natashz.util")
 
 M.start_debugging = function()
 	require("dap").continue()

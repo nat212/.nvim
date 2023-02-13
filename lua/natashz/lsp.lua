@@ -32,7 +32,7 @@ require("mason-lspconfig").setup_handlers({
 			on_attach = on_attach,
 		})
 	end,
-  ["sumneko_lua"] = function ()
+  ["lua_ls"] = function ()
     -- Let neodev handle it.
   end,
   ["omnisharp"] = function (server_name)
