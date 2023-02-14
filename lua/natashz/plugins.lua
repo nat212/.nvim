@@ -29,8 +29,9 @@ return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 
 	-- ~ Aesthetics ~
-	use({ "dracula/vim", as = "dracula", config = "vim.cmd[[colo dracula]]" })
-	use({ "gruvbox-community/gruvbox" })
+	-- use({ "dracula/vim", as = "dracula", config = "vim.cmd[[colo dracula]]" })
+	use({ "catppuccin/nvim", as = "catppuccin", config = "vim.cmd[[colo catppuccin-mocha]]" })
+	-- use({ "gruvbox-community/gruvbox" })
 	use({ "kyazdani42/nvim-web-devicons" })
 	use({
 		"nvim-lualine/lualine.nvim",
@@ -66,7 +67,11 @@ return require("packer").startup(function(use)
 	use({
 		"rcarriga/nvim-notify",
 		config = function()
-			vim.notify = require("notify")
+			local notify = require("notify")
+			notify.setup({
+				background_color = "#000000",
+			})
+			vim.notify = notify
 		end,
 	})
 
