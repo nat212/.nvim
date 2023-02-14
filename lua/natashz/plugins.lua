@@ -30,15 +30,32 @@ return require("packer").startup(function(use)
 
 	-- ~ Aesthetics ~
 	-- use({ "dracula/vim", as = "dracula", config = "vim.cmd[[colo dracula]]" })
-	use({ "catppuccin/nvim", as = "catppuccin", config = "vim.cmd[[colo catppuccin-mocha]]" })
+	use({
+		"catppuccin/nvim",
+		as = "catppuccin",
+		config = "vim.cmd[[colo catppuccin-mocha]]",
+		requires = { "folke/lsp-colors.nvim" },
+	})
 	-- use({ "gruvbox-community/gruvbox" })
 	use({ "kyazdani42/nvim-web-devicons" })
+	-- use({
+	-- 	"nvim-lualine/lualine.nvim",
+	-- 	config = function()
+	-- 		require("natashz.statusline")
+	-- 	end,
+	-- 	requires = { "kyazdani42/nvim-web-devicons" },
+	-- })
 	use({
-		"nvim-lualine/lualine.nvim",
+		"feline-nvim/feline.nvim",
 		config = function()
-			require("natashz.statusline")
+			local ctp_feline = require("catppuccin.groups.integrations.feline")
+			ctp_feline.setup({})
+
+			require("feline").setup({
+				components = ctp_feline.get(),
+			})
 		end,
-		requires = { "kyazdani42/nvim-web-devicons" },
+		requires = { "kyazdani42/nvim-web-devicons", "catppuccin/nvim" },
 	})
 	use({
 		"stevearc/dressing.nvim",
@@ -212,6 +229,7 @@ return require("packer").startup(function(use)
 		end,
 		config = function()
 			require("nvim-treesitter.install").prefer_git = false
+			require("nvim-treesitter.install").compilers = { "clang" }
 			require("nvim-treesitter.configs").setup({
 				highlight = { enable = true },
 				indent = { enable = true },

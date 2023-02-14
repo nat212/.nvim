@@ -54,7 +54,7 @@ M.setup = function()
       -- formatting.tidy,
       hover.dictionary,
       hover.printenv,
-      formatting.clang_format,
+      -- formatting.clang_format,
       formatting.csharpier,
   }
 

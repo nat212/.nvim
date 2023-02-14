@@ -8,8 +8,8 @@ else
   vim.g.wakatime_PythonBinary = python_path
 end
 
-require("natashz.plugins")
 require("natashz.sets")
+require("natashz.plugins")
 require("natashz.git")
 require("natashz.mappings")
 require("natashz.python")
