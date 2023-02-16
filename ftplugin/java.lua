@@ -11,7 +11,7 @@ else
 	jdt_config = "config_linux"
 end
 
-function get_workspace_dir()
+local function get_workspace_dir()
 	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 	return workspace_root .. "/" .. project_name
 end

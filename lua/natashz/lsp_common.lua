@@ -1,7 +1,10 @@
 local M = {}
 -- Capabilities to connect LSP to vim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-M.capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+if pcall(require, "cmp_nvim_lsp") then
+	M.capabilities = require("cmp_nvim_lsp").default_capabilities()
+else
+	M.capabilities = vim.lsp.protocol.make_client_capabilities()
+end
 
 -- Diagnostic bindings
 local opts = { noremap = true, silent = true }
@@ -10,15 +13,12 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
 
--- Terminal
--- vim.keymap.set("n", "<C-`>", "<Cmd>Lspsaga open_floaterm<CR>", opts)
--- vim.keymap.set("t", "<C-`>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], opts)
 
 -- LSP bindings
 M.on_attach = function(client, bufnr)
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
+
 	-- Gotos
-	-- vim.keymap.set("n", "<space>d", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
 	vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
@@ -45,5 +45,30 @@ M.on_attach = function(client, bufnr)
 	end)
 	vim.keymap.set("n", "<space>o", ":OrganiseImports<CR>", bufopts)
 end
+
+-- Tab/Shift+Tab to cycle complete options
+-- vim.api.nvim_set_keymap('i', '<Tab>',   [[pumvisible() ? "\<C-n>" : "\<Tab>"]],   { noremap = true, expr = true })
+-- vim.api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { noremap = true, expr = true })
+
+-- Better <CR> handling
+-- local keys = {
+--     ["cr"] = vim.api.nvim_replace_termcodes("<CR>", true, true, true),
+--     ["ctrl-y"] = vim.api.nvim_replace_termcodes("<C-y>", true, true, true),
+--     ["ctrl-y_cr"] = vim.api.nvim_replace_termcodes("<C-y><CR>", true, true, true),
+-- }
+--
+-- _G.cr_action = function()
+--   if vim.fn.pumvisible() ~= 0 then
+--     -- If popup is visible, confirm selected item or add new line otherwise
+--     local item_selected = vim.fn.complete_info()["selected"] ~= -1
+--     return item_selected and keys["ctrl-y"] or keys["ctrl-y_cr"]
+--   else
+--     -- If popup is not visible, use plain `<CR>`. You might want to customize
+--     -- according to other plugins. For example, to use 'mini.pairs', replace
+--     -- next line with `return require('mini.pairs').cr()`
+--     return keys["cr"]
+--   end
+-- end
+-- vim.api.nvim_set_keymap("i", "<CR>", "v:lua._G.cr_action()", { noremap = true, expr = true })
 
 return M

@@ -45,6 +45,7 @@ load_telescope_plugin("command_center")
 load_telescope_plugin("todo-comments")
 load_telescope_plugin("flutter")
 load_telescope_plugin("notify")
+load_telescope_plugin("projects")
 
 -- Keybinds
 
@@ -88,7 +89,7 @@ vim.keymap.set("n", ";b", function()
 	})
 end, { noremap = true })
 -- Planets
-vim.keymap.set("n", ";p", builtin.planets)
+vim.keymap.set("n", ";p", require("telescope").extensions.projects.projects)
 -- Colour schemes
 vim.keymap.set("n", ";gc", builtin.git_commits)
 -- Symbols

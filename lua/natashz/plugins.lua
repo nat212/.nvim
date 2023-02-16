@@ -25,26 +25,144 @@ vim.cmd([[
   augroup end
 ]])
 
+vim.cmd([[
+augroup packer_notify
+  autocmd!
+  autocmd User PackerComplete lua vim.notify("Packer install complete", "Packer")
+  autocmd User PackerCompileDone lua vim.notify("Packer compilation complete", "Packer")
+augroup end
+]])
+
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
-
 	-- ~ Aesthetics ~
-	-- use({ "dracula/vim", as = "dracula", config = "vim.cmd[[colo dracula]]" })
 	use({
 		"catppuccin/nvim",
 		as = "catppuccin",
-		config = "vim.cmd[[colo catppuccin-mocha]]",
+		config = function()
+			require("catppuccin").setup({
+				flavor = "mocha",
+				transparent_background = true,
+				integrations = {
+					notify = true,
+					telescope = true,
+					symbols_outline = true,
+					treesitter = true,
+					treesitter_context = true,
+					native_lsp = {
+						enabled = true,
+						virtual_text = {
+							errors = { "italic" },
+							hints = { "italic" },
+							warnings = { "italic" },
+							information = { "italic" },
+						},
+						underlines = {
+							errors = { "underline" },
+							hints = { "underline" },
+							warnings = { "underline" },
+							information = { "underline" },
+						},
+					},
+					dap = {
+						enabled = true,
+						enable_ui = true,
+					},
+					cmp = true,
+					mason = true,
+					gitsigns = true,
+					fidget = true,
+					dashboard = true,
+					hop = true,
+					lsp_trouble = true,
+					navic = {
+						enabled = true,
+						custom_bg = "NONE",
+					},
+					neogit = true,
+					barbar = true,
+					barbecue = {
+						dim_dirname = true,
+					},
+					mini = true,
+				},
+			})
+			vim.cmd.colorscheme("catppuccin")
+		end,
 		requires = { "folke/lsp-colors.nvim" },
 	})
-	-- use({ "gruvbox-community/gruvbox" })
-	use({ "kyazdani42/nvim-web-devicons" })
+	-- Lua
+	use({
+		"folke/trouble.nvim",
+		requires = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("trouble").setup({})
+			vim.keymap.set("n", "<leader>xx", "<Cmd>TroubleToggle<CR>", { silent = true, noremap = true })
+		end,
+	})
+	use({
+		"utilyre/barbecue.nvim",
+		tag = "*",
+		requires = {
+			"SmiteshP/nvim-navic",
+			"nvim-tree/nvim-web-devicons", -- optional dependency
+		},
+		after = "nvim-web-devicons", -- keep this if you're using NvChad
+		config = function()
+			require("barbecue").setup({
+				theme = "catppuccin",
+			})
+		end,
+	})
 	-- use({
-	-- 	"nvim-lualine/lualine.nvim",
-	-- 	config = function()
-	-- 		require("natashz.statusline")
-	-- 	end,
-	-- 	requires = { "kyazdani42/nvim-web-devicons" },
+	--     "SmiteshP/nvim-navic",
+	--     requires = "neovim/nvim-lspconfig",
+	--     config = function()
+	--       require("nvim-navic").setup({})
+	--     end,
 	-- })
+	use({
+		"glepnir/dashboard-nvim",
+		event = "VimEnter",
+		config = function()
+			require("dashboard").setup({})
+		end,
+		requires = { "nvim-tree/nvim-web-devicons" },
+	})
+
+	use({
+		"phaazon/hop.nvim",
+		branch = "v2", -- optional but strongly recommended
+		config = function()
+			local hop = require("hop")
+			hop.setup({ keys = "etovxqpdygfblzhckisuran" })
+
+			local directions = require("hop.hint").HintDirection
+			vim.keymap.set("", "<leader>hf", function()
+				hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+			end, { remap = true })
+			vim.keymap.set("", "<leader>hF", function()
+				hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+			end, { remap = true })
+			vim.keymap.set("", "<leader>ht", function()
+				hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false, hint_offset = -1 })
+			end, { remap = true })
+			vim.keymap.set("", "<leader>hT", function()
+				hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false, hint_offset = 1 })
+			end, { remap = true })
+		end,
+	})
+	use({
+		"j-hui/fidget.nvim",
+		config = function()
+			require("fidget").setup({
+				window = {
+					blend = 0,
+				},
+			})
+		end,
+	})
+	use({ "kyazdani42/nvim-web-devicons" })
 	use({
 		"feline-nvim/feline.nvim",
 		config = function()
@@ -54,55 +172,112 @@ return require("packer").startup(function(use)
 			require("feline").setup({
 				components = ctp_feline.get(),
 			})
+
+			local navic_exists, navic = pcall(require, "nvim-navic")
+			if navic_exists then
+				local winbar_components = {
+					active = {},
+					inactive = {},
+				}
+				table.insert(winbar_components.active, {})
+				table.insert(winbar_components.active[1], {
+					provider = function()
+						return navic.get_location()
+					end,
+					enabled = function()
+						return navic.is_available()
+					end,
+				})
+				require("feline").winbar.setup({
+					components = winbar_components,
+				})
+			end
 		end,
 		requires = { "kyazdani42/nvim-web-devicons", "catppuccin/nvim" },
 	})
+	-- use({
+	--     "folke/noice.nvim",
+	--     config = function()
+	--       require("noice").setup({
+	--           lsp = {
+	--               -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+	--               override = {
+	--                   ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+	--                   ["vim.lsp.util.stylize_markdown"] = true,
+	--                   ["cmp.entry.get_documentation"] = true,
+	--               },
+	--           },
+	--           -- you can enable a preset for easier configuration
+	--           presets = {
+	--               bottom_search = true, -- use a classic bottom cmdline for search
+	--               command_palette = true, -- position the cmdline and popupmenu together
+	--               long_message_to_split = true, -- long messages will be sent to a split
+	--               inc_rename = false, -- enables an input dialog for inc-rename.nvim
+	--               lsp_doc_border = false, -- add a border to hover docs and signature help
+	--           },
+	--       })
+	--     end,
+	--     requires = {
+	--         "MunifTanjim/nui.nvim",
+	--         "rcarriga/nvim-notify",
+	--     },
+	-- })
+
+	-- Packer
+	-- use({
+	-- 	"akinsho/bufferline.nvim",
+	-- 	tag = "v3.*",
+	-- 	config = function()
+	-- 		require("natashz.tabs")
+	-- 	end,
+	-- })
 	use({
-		"stevearc/dressing.nvim",
-		requires = { "kyazdani42/nvim-web-devicons" },
+		"romgrk/barbar.nvim",
+		requires = "nvim-web-devicons",
 		config = function()
-			require("dressing").setup({
-				select = {
-					enabled = true,
-					telescope = require("telescope.themes").get_cursor(),
-					builtin = {
-						relative = "cursor",
-						start_in_insert = true,
-						windblend = 40,
-					},
-				},
-			})
-		end,
-	})
-	use({
-		"akinsho/bufferline.nvim",
-		tag = "v3.*",
-		config = function()
-			require("natashz.tabs")
+			require("natashz.tabs").setup()
 		end,
 	})
 	use({
 		"rcarriga/nvim-notify",
 		config = function()
-			local notify = require("notify")
-			notify.setup({
-				background_color = "#000000",
+			require("notify").setup({
+				background_colour = "#000000",
 			})
-			vim.notify = notify
+			vim.notify = require("notify")
 		end,
 	})
 
 	-- Git
+	-- use({
+	-- 	"tpope/vim-fugitive",
+	-- 	"junegunn/gv.vim",
+	-- })
 	use({
-		"tpope/vim-fugitive",
-		"junegunn/gv.vim",
-		{
-			"lewis6991/gitsigns.nvim",
-			config = function()
-				require("gitsigns").setup()
-			end,
-			requires = { "nvim-lua/plenary.nvim" },
-		},
+		"lewis6991/gitsigns.nvim",
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
+	use({
+		"TimUntersberger/neogit",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			local neogit = require("neogit")
+			neogit.setup({
+				popup = {
+					kind = "vsplit",
+				},
+				commit_popup = {
+					kind = "vsplit",
+				},
+			})
+			vim.keymap.set("n", "<leader>gs", neogit.open)
+			vim.keymap.set("n", "<leader>gc", function()
+				require("neogit").open({ "commit" })
+			end)
+		end,
 	})
 
 	-- Telescope
@@ -143,13 +318,12 @@ return require("packer").startup(function(use)
 	-- Movement/Utilities
 	use({ "mg979/vim-visual-multi", branch = "master" })
 	use({ "tpope/vim-surround" })
-	use({ "tpope/vim-commentary" })
-	use({
-		"voldikss/vim-floaterm",
-		config = function()
-			require("natashz.floaterm")
-		end,
-	})
+	-- use({
+	-- 	"voldikss/vim-floaterm",
+	-- 	config = function()
+	-- 		require("natashz.floaterm")
+	-- 	end,
+	-- })
 
 	use({
 		"akinsho/toggleterm.nvim",
@@ -181,7 +355,27 @@ return require("packer").startup(function(use)
 				require("mason-lspconfig").setup({})
 			end,
 		},
+	})
+	use({
 		"neovim/nvim-lspconfig",
+		requires = {
+			"williamboman/mason-lspconfig.nvim",
+			"williamboman/mason.nvim",
+			"folke/neodev.nvim",
+			"L3MON4D3/LuaSnip",
+		},
+		config = function()
+			require("natashz.neodev").setup()
+			require("natashz.lsp")
+		end,
+	})
+	use({
+		"doxnit/cmp-luasnip-choice",
+		config = function()
+			require("cmp_luasnip_choice").setup({
+				auto_open = true, -- Automatically open nvim-cmp on choice node (default: true)
+			})
+		end,
 	})
 	use({
 		"hrsh7th/nvim-cmp",
@@ -212,14 +406,6 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
-	-- use({
-	-- 	"glepnir/lspsaga.nvim",
-	-- 	config = function()
-	-- 		require("lspsaga").setup({
-	-- 			lightbulb = { enable = false },
-	-- 		})
-	-- 	end,
-	-- })
 
 	-- Treesitter
 	use({
@@ -235,6 +421,13 @@ return require("packer").startup(function(use)
 				indent = { enable = true },
 				auto_install = true,
 			})
+		end,
+	})
+	use({
+		"nvim-treesitter/nvim-treesitter-context",
+		requires = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("treesitter-context").setup({})
 		end,
 	})
 
@@ -295,6 +488,43 @@ return require("packer").startup(function(use)
 		end,
 		ft = { "html", "typescriptreact", "javascriptreact", "vue", "svelte" },
 	})
+
+	-- Mini
+	use({
+		"echasnovski/mini.nvim",
+		config = function()
+			require("mini.ai").setup()
+			require("mini.align").setup()
+			require("mini.comment").setup()
+			-- require("mini.completion").setup({
+			--     lsp_completion = {
+			--         source_func = "omnifunc",
+			--         auto_setup = false,
+			--     },
+			-- })
+		end,
+	})
+
+	-- Project
+	use({
+		"ahmedkhalf/project.nvim",
+		config = function()
+			require("project_nvim").setup({})
+		end,
+	})
+	-- use({
+	--     "echasnovski/mini.ai",
+	--     config = function()
+	--       require("mini.ai").setup()
+	--     end,
+	-- })
+	-- use({
+	--     "echasnovski/mini.align",
+	--     config = function()
+	--       require("mini.align").setup()
+	--     end,
+	-- })
+	-- use("echasnovski/mini.comment")
 
 	-- Wakatime
 	use({ "wakatime/vim-wakatime" })

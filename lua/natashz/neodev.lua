@@ -7,9 +7,13 @@ local M = {}
 M.setup = function ()
 	require("neodev").setup({
 		library = {
-			plugins = { "nvim-dap-ui" },
+      plugins = true,
 			types = true,
+      runtime = true,
+      enabled = true,
 		},
+    lspconfig = true,
+    pathStrict = true,
 	})
 
   require("lspconfig").lua_ls.setup({
@@ -18,7 +22,7 @@ M.setup = function ()
     settings = {
       Lua = {
         completion = {
-          callSnippet = "ReplaceA,"
+          callSnippet = "Replace"
         },
         workspace = {
           checkThirdParty = false,

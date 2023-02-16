@@ -13,10 +13,21 @@ M.start_debugging = function()
 	M.ui_open = true
 end
 
+local function setup_signs()
+  local sign = vim.fn.sign_define
+
+  sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "" })
+  sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = "" })
+  sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "" })
+end
+
 M.setup = function()
 	M.ui_open = false
 	local dapui = require("dapui")
 	local dap = require("dap")
+
+  setup_signs()
+
 	dapui.setup({
 		mappings = {
 			expand = "<CR>",

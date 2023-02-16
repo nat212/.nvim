@@ -23,7 +23,7 @@ keymap.vnoremap("<leader>d", '"_d')
 keymap.tnoremap("<Esc>", "<C-\\><C-n>")
 
 -- Quickfix
-keymap.nmap("<leader>qc", "<Cmd>cclose<CR>") -- Close quickfix window
+keymap.nmap("<leader>qc", close_quickfix) -- Close quickfix window
 
 -- MD preview
 vim.cmd([[
@@ -32,3 +32,26 @@ augroup markdown_enable_preview
   autocmd BufRead ft=markdown nnoremap <silent><buffer> <leader>mp <Plug>MarkdownPreviewToggle
 augroup end
 ]])
+
+-- Reload neovim configs
+keymap.nnoremap("<leader>ss", function()
+  local file = vim.fn.expand("%:p")
+  vim.cmd([[source ]] .. file)
+  vim.notify("Reloaded " .. file, "Config")
+end)
+-- Packer
+keymap.nnoremap("<leader>pc", function()
+  vim.notify("Compiling packer", "Plugins")
+  local packer = require("packer")
+  packer.compile()
+end, { silent = true })
+keymap.nnoremap("<leader>pi", function()
+  vim.notify("Installing plugins", "Plugins")
+  local packer = require("packer")
+  packer.install()
+end, { silent = true })
+keymap.nnoremap("<leader>ps", function()
+  vim.notify("Syncing plugins", "Plugins")
+  local packer = require("packer")
+  packer.sync()
+end, { silent = true })
