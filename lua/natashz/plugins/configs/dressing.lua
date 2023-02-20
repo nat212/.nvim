@@ -8,7 +8,14 @@ M.setup = function()
 			builtin = {
 				relative = "cursor",
 				start_in_insert = true,
-				windblend = 0,
+				win_options = {
+					winblend = 0,
+				},
+			},
+		},
+		input = {
+			win_options = {
+				winblend = 0,
 			},
 		},
 	})

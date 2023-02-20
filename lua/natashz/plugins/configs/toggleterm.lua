@@ -1,6 +1,6 @@
 local M = {}
 
-function M.set_terminal_keymaps()
+function _G.set_terminal_keymaps()
 	local opts = { buffer = 0 }
 	vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
 	vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
@@ -47,6 +47,7 @@ M.setup = function()
 		end,
 		start_in_insert = true,
 		persist_mode = true,
+    auto_scroll = true,
 	})
 
 	setup_autocmds()

@@ -21,7 +21,7 @@ local packer_bootstrap = ensure_packer()
 vim.cmd([[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost plugins.lua source <afile>
+    autocmd BufWritePost plugins/init.lua source <afile>
   augroup end
 ]])
 
@@ -35,6 +35,7 @@ augroup end
 
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
+
 	-- ~ Aesthetics ~
 	use({
 		"catppuccin/nvim",
@@ -127,6 +128,17 @@ return require("packer").startup(function(use)
 		"j-hui/fidget.nvim",
 		config = function()
 			require("natashz.plugins.configs.fidget").setup()
+		end,
+	})
+
+	use({
+		"stevearc/overseer.nvim",
+		requires = {
+			"mfussenegger/nvim-dap",
+			"akinsho/toggleterm.nvim",
+		},
+		config = function()
+			require("natashz.plugins.configs.overseer").setup()
 		end,
 	})
 
