@@ -38,7 +38,7 @@ local function get_sources()
 
 		-- Lua
 		formatting.stylua,
-		diagnostics.selene,
+		-- diagnostics.selene,
 
 		-- Golang
 		diagnostics.golangci_lint,

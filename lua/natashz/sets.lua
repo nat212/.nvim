@@ -24,7 +24,7 @@ vim.opt.smarttab = true
 vim.opt.splitright = true
 
 -- TODO: Figure out why this gives a python error
-if require("natashz.util").is_windows then
+if require("natashz.core.util").is_windows then
 	-- Found at: https://github.com/akinsho/toggleterm.nvim/issues/303
 	-- vim.opt.shell = vim.fn.executable("pwsh") and "pwsh" or "powershell"
 	-- vim.opt.shellcmdflag =

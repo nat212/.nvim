@@ -1,17 +1,18 @@
 local M = {}
-local util = require("natashz.util")
-
-local capabilities = require("natashz.lsp_common").capabilities
-local on_attach = require("natashz.lsp_common").on_attach
-
-local flutter_sdk_path
-if util.is_windows then
-	flutter_sdk_path = vim.fs.normalize("C:/src/flutter")
-else
-	flutter_sdk_path = os.getenv("HOME") .. "/flutter"
-end
 
 M.setup = function()
+	local util = require("natashz.core.util")
+
+	local capabilities = require("natashz.core.lsp").capabilities
+	local on_attach = require("natashz.core.lsp").on_attach
+
+	local flutter_sdk_path
+	if util.is_windows then
+		flutter_sdk_path = vim.fs.normalize("C:/src/flutter")
+	else
+		flutter_sdk_path = os.getenv("HOME") .. "/flutter"
+	end
+
 	require("flutter-tools").setup({
 		lsp = {
 			on_attach = on_attach,

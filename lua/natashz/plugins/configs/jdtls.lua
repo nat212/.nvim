@@ -1,10 +1,11 @@
-local lsp_common = require("natashz.lsp_common")
-
-local on_attach = lsp_common.on_attach
-local capabilities = lsp_common.capabilities
-
 local M = {}
+
 M.setup = function()
+	local lsp = require("natashz.core.lsp")
+
+	local on_attach = lsp.on_attach
+	local capabilities = lsp.capabilities
+
 	local jdtls_config = {
 		cmd = { "jdtls" },
 		on_attach = on_attach,

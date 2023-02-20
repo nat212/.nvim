@@ -32,7 +32,7 @@ M.setup = function()
 		end,
 		["powershell_es"] = function(server_name)
 			local ps_bundle
-			if require("natashz.util").is_windows then
+			if require("natashz.core.util").is_windows then
 				ps_bundle = vim.fs.normalize("C:/src/PowerShellEditorServices")
 			end
 			lspconfig[server_name].setup({

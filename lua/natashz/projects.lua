@@ -1,3 +1,0 @@
-local projects = {}
-
-return projects

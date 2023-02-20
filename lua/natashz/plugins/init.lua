@@ -62,7 +62,7 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-  -- Status/Winbar
+	-- Status/Winbar
 	use({
 		"utilyre/barbecue.nvim",
 		branch = "fix/E36",
@@ -84,7 +84,7 @@ return require("packer").startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", "catppuccin" },
 	})
 
-  -- Navigation
+	-- Navigation
 	use({
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
@@ -106,7 +106,7 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-  -- Language Utils
+	-- Language Utils
 	use({
 		"folke/trouble.nvim",
 		requires = "nvim-tree/nvim-web-devicons",
@@ -204,7 +204,13 @@ return require("packer").startup(function(use)
 	})
 
 	-- LSP Stuff
-	use("mfussenegger/nvim-jdtls")
+	use({
+		"mfussenegger/nvim-jdtls",
+		config = function()
+			require("natashz.plugins.configs.jdtls").setup()
+		end,
+		ft = "java",
+	})
 
 	use({
 		"akinsho/flutter-tools.nvim",
@@ -232,7 +238,7 @@ return require("packer").startup(function(use)
 	use({
 		"neovim/nvim-lspconfig",
 		config = function()
-      require("natashz.plugins.configs.lspconfig").setup()
+			require("natashz.plugins.configs.lspconfig").setup()
 		end,
 	})
 
@@ -246,7 +252,7 @@ return require("packer").startup(function(use)
 	use({
 		"doxnit/cmp-luasnip-choice",
 		config = function()
-      require("natashz.plugins.configs.cmp-luasnip-choice").setup()
+			require("natashz.plugins.configs.cmp-luasnip-choice").setup()
 		end,
 	})
 
@@ -337,7 +343,7 @@ return require("packer").startup(function(use)
 	use({
 		"leoluz/nvim-dap-go",
 		config = function()
-      require("natashz.plugins.configs.dap-go").setup()
+			require("natashz.plugins.configs.dap-go").setup()
 		end,
 	})
 

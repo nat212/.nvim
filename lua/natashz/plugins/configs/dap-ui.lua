@@ -8,10 +8,22 @@ local function setup_signs()
 	sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "" })
 end
 
-_G.dapui_open = false
+local function close_dapui()
+	require("dapui").close()
+end
 
-_G.reset_dapui_layout = function()
-	if _G.dapui_open then
+local function setup_autocmds()
+	vim.api.nvim_create_augroup("dapui_exit_on_quit", { clear = true })
+	vim.api.nvim_create_autocmd("QuitPre", {
+		group = "dapui_exit_on_quit",
+		callback = close_dapui,
+	})
+end
+
+M.dapui_open = false
+
+M.reset_dapui_layout = function()
+	if M.dapui_open then
 		require("dapui").open({ reset = true })
 	end
 end
@@ -20,11 +32,11 @@ local function setup_keybinds()
 	-- UI
 	vim.keymap.set("n", "<leader>dq", function()
 		require("dapui").close()
-    _G.dapui_open = false
+		M.dapui_open = false
 	end)
 	vim.keymap.set("n", "<leader>do", function()
 		require("dapui").open({ reset = true })
-		_G.dapui_open = true
+		M.dapui_open = true
 	end, { silent = true })
 end
 
@@ -79,6 +91,7 @@ M.setup = function()
 	end
 
 	setup_keybinds()
+  setup_autocmds()
 end
 
 return M

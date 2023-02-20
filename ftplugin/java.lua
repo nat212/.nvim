@@ -2,7 +2,7 @@ local jdt_root
 local jdt_config
 local workspace_root
 local jdt_version = "1.6.400.v20210924-0641"
-if require("natashz.util").is_windows then
+if require("natashz.core.util").is_windows then
 	jdt_root = "C:/tools/jdt-language-server"
 	jdt_config = "config_win"
 	workspace_root = vim.loop.os_homedir() .. "/.jdt"

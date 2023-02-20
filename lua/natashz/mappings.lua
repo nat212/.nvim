@@ -2,7 +2,7 @@ local keymap = require("natashz.keymap")
 
 local function close_quickfix()
   vim.cmd([[cclose]])
-  require("natashz.dap").reset_layout()
+  _G.reset_dapui_layout()
 end
 
 -- Actually good end/start of line bindings
