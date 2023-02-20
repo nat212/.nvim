@@ -44,14 +44,25 @@ return require("packer").startup(function(use)
 		end,
 		requires = { "folke/lsp-colors.nvim" },
 	})
-	-- Lua
+
 	use({
-		"folke/trouble.nvim",
-		requires = "nvim-tree/nvim-web-devicons",
+		"stevearc/dressing.nvim",
+		requires = { "kyazdani42/nvim-web-devicons" },
 		config = function()
-			require("natashz.plugins.configs.trouble").setup()
+			require("natashz.plugins.configs.dressing").setup()
 		end,
 	})
+
+	use({ "kyazdani42/nvim-web-devicons" })
+
+	use({
+		"rcarriga/nvim-notify",
+		config = function()
+			require("natashz.plugins.configs.notify").setup()
+		end,
+	})
+
+  -- Status/Winbar
 	use({
 		"utilyre/barbecue.nvim",
 		branch = "fix/E36",
@@ -64,14 +75,16 @@ return require("packer").startup(function(use)
 			require("natashz.plugins.configs.barbecue").setup()
 		end,
 	})
+
 	use({
-		"stevearc/dressing.nvim",
-		requires = { "kyazdani42/nvim-web-devicons" },
+		"feline-nvim/feline.nvim",
 		config = function()
-			require("natashz.plugins.configs.dressing").setup()
+			require("natashz.plugins.configs.feline").setup()
 		end,
+		requires = { "kyazdani42/nvim-web-devicons", "catppuccin" },
 	})
 
+  -- Navigation
 	use({
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
@@ -86,42 +99,38 @@ return require("packer").startup(function(use)
 	})
 
 	use({
-		"phaazon/hop.nvim",
-		branch = "v2",
-		config = function()
-			require("natashz.plugins.configs.hop").setup()
-		end,
-	})
-	use({
-		"j-hui/fidget.nvim",
-		config = function()
-			require("natashz.plugins.configs.fidget").setup()
-		end,
-	})
-	use({ "kyazdani42/nvim-web-devicons" })
-	use({
-		"feline-nvim/feline.nvim",
-		config = function()
-			require("natashz.plugins.configs.feline").setup()
-		end,
-		requires = { "kyazdani42/nvim-web-devicons", "catppuccin" },
-	})
-
-	use({
 		"romgrk/barbar.nvim",
 		requires = "nvim-web-devicons",
 		config = function()
 			require("natashz.plugins.configs.barbar").setup()
 		end,
 	})
+
+  -- Language Utils
 	use({
-		"rcarriga/nvim-notify",
+		"folke/trouble.nvim",
+		requires = "nvim-tree/nvim-web-devicons",
 		config = function()
-			require("natashz.plugins.configs.notify").setup()
+			require("natashz.plugins.configs.trouble").setup()
 		end,
 	})
 
-	-- Git
+	use({
+		"akinsho/toggleterm.nvim",
+		tag = "*",
+		config = function()
+			require("natashz.plugins.configs.toggleterm").setup()
+		end,
+	})
+
+	use({
+		"j-hui/fidget.nvim",
+		config = function()
+			require("natashz.plugins.configs.fidget").setup()
+		end,
+	})
+
+	-- VCS
 	use({
 		"lewis6991/gitsigns.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
@@ -129,6 +138,7 @@ return require("packer").startup(function(use)
 			require("natashz.plugins.configs.gitsigns").setup()
 		end,
 	})
+
 	use({
 		"TimUntersberger/neogit",
 		requires = "nvim-lua/plenary.nvim",
@@ -174,20 +184,28 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- Movement/Utilities
+	-- Movement/Editing
 	use({ "mg979/vim-visual-multi", branch = "master" })
 	use({ "tpope/vim-surround" })
 
 	use({
-		"akinsho/toggleterm.nvim",
-		tag = "*",
+		"phaazon/hop.nvim",
+		branch = "v2",
 		config = function()
-			require("natashz.plugins.configs.toggleterm").setup()
+			require("natashz.plugins.configs.hop").setup()
+		end,
+	})
+
+	use({
+		"windwp/nvim-autopairs",
+		config = function()
+			require("natashz.plugins.configs.autopairs").setup()
 		end,
 	})
 
 	-- LSP Stuff
 	use("mfussenegger/nvim-jdtls")
+
 	use({
 		"akinsho/flutter-tools.nvim",
 		requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
@@ -213,22 +231,29 @@ return require("packer").startup(function(use)
 
 	use({
 		"neovim/nvim-lspconfig",
-		requires = {
-			"folke/neodev.nvim",
-			"L3MON4D3/LuaSnip",
-		},
 		config = function()
-			require("natashz.neodev").setup()
-			require("natashz.lsp")
+      require("natashz.plugins.configs.lspconfig").setup()
+		end,
+	})
+
+	use({
+		"folke/neodev.nvim",
+		config = function()
+			require("natashz.plugins.configs.neodev").setup()
 		end,
 	})
 
 	use({
 		"doxnit/cmp-luasnip-choice",
 		config = function()
-			require("cmp_luasnip_choice").setup({
-				auto_open = true, -- Automatically open nvim-cmp on choice node (default: true)
-			})
+      require("natashz.plugins.configs.cmp-luasnip-choice").setup()
+		end,
+	})
+
+	use({
+		"L3MON4D3/LuaSnip",
+		config = function()
+			require("natashz.plugins.configs.luasnip").setup()
 		end,
 	})
 
@@ -245,16 +270,23 @@ return require("packer").startup(function(use)
 			"folke/neodev.nvim",
 		},
 		config = function()
-			require("natashz.neodev").setup()
-			require("natashz.lsp")
+			require("natashz.plugins.configs.cmp").setup()
 		end,
 	})
+
 	use("rafamadriz/friendly-snippets")
 
 	use({
 		"simrat39/symbols-outline.nvim",
 		config = function()
 			require("natashz.plugins.configs.symbols-outline").setup()
+		end,
+	})
+
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		config = function()
+			require("natashz.plugins.configs.null-ls").setup()
 		end,
 	})
 
@@ -277,7 +309,16 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- DAP
+	use({
+		"windwp/nvim-ts-autotag",
+		requires = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("natashz.plugins.configs.nvim-ts-autotag").setup()
+		end,
+		ft = { "html", "typescriptreact", "javascriptreact", "vue", "svelte", "xml" },
+	})
+
+	-- Debugging
 	use({
 		"rcarriga/nvim-dap-ui",
 		requires = { "mfussenegger/nvim-dap" },
@@ -296,17 +337,7 @@ return require("packer").startup(function(use)
 	use({
 		"leoluz/nvim-dap-go",
 		config = function()
-			require("dap-go").setup({
-				dap_configurations = {
-					{
-						type = "go",
-						name = "Pocketbase Serve",
-						request = "launch",
-						program = "${fileDirname}",
-						args = { "serve" },
-					},
-				},
-			})
+      require("natashz.plugins.configs.dap-go").setup()
 		end,
 	})
 
@@ -320,36 +351,11 @@ return require("packer").startup(function(use)
 		ft = { "markdown" },
 	})
 
-	-- Null-ls
-	use({
-		"jose-elias-alvarez/null-ls.nvim",
-		config = function()
-			require("natashz.plugins.configs.null-ls").setup()
-		end,
-	})
-
-	-- Autopairs
-	use({
-		"windwp/nvim-autopairs",
-		config = function()
-			require("natashz.plugins.configs.autopairs").setup()
-		end,
-	})
-
-	use({
-		"windwp/nvim-ts-autotag",
-		requires = { "nvim-treesitter/nvim-treesitter" },
-		config = function()
-			require("natashz.plugins.configs.nvim-ts-autotag").setup()
-		end,
-		ft = { "html", "typescriptreact", "javascriptreact", "vue", "svelte", "xml" },
-	})
-
 	-- Mini
 	use({
 		"echasnovski/mini.nvim",
 		config = function()
-      require("natashz.plugins.configs.mini").setup()
+			require("natashz.plugins.configs.mini").setup()
 		end,
 	})
 
