@@ -34,7 +34,7 @@ M.setup = function()
 		},
 		ui = {
 			notification_style = "native",
-      border = "rounded",
+			border = "rounded",
 		},
 		dev_log = {
 			enabled = false,
@@ -67,6 +67,7 @@ M.setup = function()
 						cwd = "${workspaceFolder}",
 					},
 				}
+				require("dap").defaults.dart.exception_breakpoints = {}
 			end,
 		},
 	})
