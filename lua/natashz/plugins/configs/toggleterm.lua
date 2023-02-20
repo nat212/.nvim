@@ -40,10 +40,10 @@ M.setup = function()
 		shell = require("natashz.core.util").shell,
 		direction = "vertical",
 		on_close = function()
-			require("natashz.plugins.configs.dap-ui").reset_dapui_layout()
+			_G.reset_dapui_layout()
 		end,
 		on_open = function()
-			require("natashz.plugins.configs.dap-ui").reset_dapui_layout()
+			_G.reset_dapui_layout()
 		end,
 		start_in_insert = true,
 		persist_mode = true,

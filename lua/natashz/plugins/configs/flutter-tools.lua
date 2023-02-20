@@ -34,6 +34,7 @@ M.setup = function()
 		},
 		ui = {
 			notification_style = "native",
+      border = "rounded",
 		},
 		dev_log = {
 			enabled = false,

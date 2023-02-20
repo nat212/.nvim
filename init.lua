@@ -15,9 +15,9 @@ augroup end
 ]])
 
 -- Transparent bg
-vim.cmd([[
-au ColorScheme * hi Normal ctermbg=none guibg=none
-]])
+-- vim.cmd([[
+-- au ColorScheme * hi Normal ctermbg=none guibg=none
+-- ]])
 
 -- Restore cursor
 vim.cmd([[

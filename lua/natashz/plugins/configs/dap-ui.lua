@@ -22,7 +22,7 @@ end
 
 M.dapui_open = false
 
-M.reset_dapui_layout = function()
+_G.reset_dapui_layout = function()
 	if M.dapui_open then
 		require("dapui").open({ reset = true })
 	end

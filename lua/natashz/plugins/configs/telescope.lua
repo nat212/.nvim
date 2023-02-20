@@ -9,6 +9,10 @@ local function project_files()
 	end
 end
 
+local function telescope_buffer_dir()
+	return vim.fn.expand("%:p:h")
+end
+
 local function load_telescope_plugin(plugin)
 	pcall(require("telescope").load_extension, plugin)
 end
