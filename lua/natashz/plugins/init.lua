@@ -199,6 +199,7 @@ return require("packer").startup(function(use)
   -- Movement/Editing
   use({ "mg979/vim-visual-multi", branch = "master" })
   use({ "tpope/vim-surround" })
+  use({ "tpope/vim-sleuth" })
 
   use({
     "phaazon/hop.nvim",
