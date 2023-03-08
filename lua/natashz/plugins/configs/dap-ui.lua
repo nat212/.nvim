@@ -76,18 +76,22 @@ M.setup = function()
 
 	dap.listeners.after.event_initialized["dapui_config"] = function()
 		dapui.open({ reset = true })
+    M.dapui_open = true
 	end
 
 	dap.listeners.before.event_terminated["dapui_config"] = function()
 		dapui.close()
+    M.dapui_open = false
 	end
 
 	dap.listeners.before.event_exited["dapui_config"] = function()
 		dapui.close()
+    M.dapui_open = false
 	end
 
 	dap.listeners.before.disconnect["dapui_config"] = function()
 		dapui.close()
+    M.dapui_open = false
 	end
 
 	setup_keybinds()
