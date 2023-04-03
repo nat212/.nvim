@@ -66,7 +66,7 @@ return require("packer").startup(function(use)
   -- Status/Winbar
   use({
     "utilyre/barbecue.nvim",
-    branch = "fix/E36",
+    tag = "*",
     requires = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
