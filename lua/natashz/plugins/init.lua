@@ -208,6 +208,7 @@ return require("packer").startup(function(use)
       require("natashz.plugins.configs.hop").setup()
     end,
   })
+  use({ "andymass/vim-matchup" })
 
   -- LSP Stuff
   use({
