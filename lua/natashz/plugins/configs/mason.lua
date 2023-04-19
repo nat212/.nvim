@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function()
-	require("mason").setup({})
+  require("mason").setup()
 end
 
 return M

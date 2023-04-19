@@ -162,7 +162,8 @@ return require("packer").startup(function(use)
   -- Telescope
   use({
     "nvim-telescope/telescope-fzf-native.nvim",
-    run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    run =
+    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
   })
 
   use({
@@ -200,6 +201,12 @@ return require("packer").startup(function(use)
   use({ "mg979/vim-visual-multi", branch = "master" })
   use({ "tpope/vim-surround" })
   use({ "tpope/vim-sleuth" })
+  use({
+    "windwp/nvim-autopairs",
+    config = function()
+      require("natashz.plugins.configs.autopairs").setup()
+    end,
+  })
 
   use({
     "phaazon/hop.nvim",
@@ -239,6 +246,7 @@ return require("packer").startup(function(use)
     config = function()
       require("natashz.plugins.configs.mason-lspconfig").setup()
     end,
+    after = "nvim-lspconfig",
     requires = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
   })
 
@@ -247,6 +255,7 @@ return require("packer").startup(function(use)
     config = function()
       require("natashz.plugins.configs.lspconfig").setup()
     end,
+    after = "mason.nvim",
   })
 
   use({
@@ -254,6 +263,7 @@ return require("packer").startup(function(use)
     config = function()
       require("natashz.plugins.configs.neodev").setup()
     end,
+    after = "nvim-lspconfig",
   })
 
   use({
@@ -328,6 +338,7 @@ return require("packer").startup(function(use)
     config = function()
       require("natashz.plugins.configs.nvim-ts-autotag").setup()
     end,
+    after = "nvim-treesitter",
     ft = { "html", "typescriptreact", "javascriptreact", "vue", "svelte", "xml" },
   })
 
