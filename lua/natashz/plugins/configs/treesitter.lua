@@ -18,6 +18,7 @@ M.setup = function()
       "vim",
       "lua",
       "json",
+      "jsonc",
       "scss",
       "c_sharp",
       "yaml",

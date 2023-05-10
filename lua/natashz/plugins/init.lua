@@ -397,6 +397,15 @@ return require("packer").startup(function(use)
   -- Wakatime
   use({ "wakatime/vim-wakatime" })
 
+  -- Devcontainers
+  use({
+    "esensar/nvim-dev-container",
+    requires = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("natashz.plugins.configs.nvim-dev-container").setup()
+    end,
+  })
+
   if packer_bootstrap then
     require("packer").sync()
   end

@@ -64,6 +64,9 @@ local function get_sources()
     -- Configs
     formatting.nginx_beautifier,
 
+    -- Prisma
+    formatting.prismaFmt,
+
     -- Misc
     diagnostics.tidy,
     diagnostics.todo_comments,
