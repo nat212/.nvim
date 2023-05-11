@@ -67,6 +67,12 @@ local function get_sources()
     -- Prisma
     formatting.prismaFmt,
 
+    -- Database
+    diagnostics.sqlfluff.with({
+      extra_args = { "--dialect", "postgres" },
+    }),
+    formatting.pg_format,
+
     -- Misc
     diagnostics.tidy,
     diagnostics.todo_comments,

@@ -406,6 +406,33 @@ return require("packer").startup(function(use)
     end,
   })
 
+  -- Testing
+  use({
+    "nvim-neotest/neotest",
+    requires = {
+      -- Dependencies
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+
+      -- Test adapters
+      "sidlatau/neotest-dart",
+      "marilari88/neotest-vitest",
+      "thenbe/neotest-playwright",
+      "Issafalcon/neotest-dotnet"
+    },
+    config = function()
+      require("natashz.plugins.configs.neotest").setup()
+    end,
+  })
+
+  use({
+    "antoinemadec/FixCursorHold.nvim",
+    config = function()
+      vim.g.cursorhold_updatetime = 50
+    end,
+  })
+
   if packer_bootstrap then
     require("packer").sync()
   end
