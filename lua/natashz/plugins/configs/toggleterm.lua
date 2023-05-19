@@ -28,6 +28,11 @@ local function setup_autocmds()
 end
 
 M.setup = function()
+  local pine_exists, pine_highlights = pcall(require, 'rose-pine.plugins.toggleterm')
+  local highlights
+  if pine_exists then
+    highlights = pine_highlights
+  end
 	require("toggleterm").setup({
 		size = function(term)
 			if term.direction == "horizontal" then
@@ -48,6 +53,7 @@ M.setup = function()
 		start_in_insert = true,
 		persist_mode = true,
     auto_scroll = true,
+    highlights,
 	})
 
 	setup_autocmds()

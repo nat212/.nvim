@@ -47,6 +47,14 @@ return require("packer").startup(function(use)
   })
 
   use({
+    "rose-pine/neovim",
+    as = "rose-pine",
+    config = function()
+      require("natashz.plugins.configs.rose-pine").setup()
+    end,
+  })
+
+  use({
     "stevearc/dressing.nvim",
     requires = { "kyazdani42/nvim-web-devicons" },
     config = function()
@@ -419,7 +427,7 @@ return require("packer").startup(function(use)
       "sidlatau/neotest-dart",
       "marilari88/neotest-vitest",
       "thenbe/neotest-playwright",
-      "Issafalcon/neotest-dotnet"
+      "Issafalcon/neotest-dotnet",
     },
     config = function()
       require("natashz.plugins.configs.neotest").setup()

@@ -49,7 +49,6 @@ M.setup = function()
 			mini = true,
 		},
 	})
-	vim.cmd.colorscheme("catppuccin")
 end
 
 return M
